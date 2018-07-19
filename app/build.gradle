@@ -1,0 +1,223 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: "io.mironov.smuggler"
+//apply plugin: 'com.google.gms.google-services'
+
+android {
+    Version version = readVersion()
+
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.isuncloud.ott"
+        testApplicationId "com.test.ott"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode version.versionCode.toInteger()
+        versionName version.versionName
+
+        archivesBaseName = rootProject.name + "_" + versionName
+
+        // Enabling multidex support.
+        multiDexEnabled true
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    kapt {
+        correctErrorTypes = true
+        // Exporting schema into this folder whenever db version change
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
+        }
+    }
+
+    flavorDimensions "mode"
+
+    productFlavors {
+        staging {
+            dimension "mode"
+            applicationId = "com.isuncloud.ott.staging"
+            versionNameSuffix "-staging"
+        }
+        production {
+            dimension "mode"
+            applicationId = "com.isuncloud.ott"
+        }
+    }
+
+    buildTypes {
+        debug {
+            zipAlignEnabled true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable true
+
+            // Disable fabric build ID generation for debug builds
+            ext.enableCrashlytics = false
+
+            versionNameSuffix "-debug"
+        }
+        release {
+            // TODO: DISABLE PROGUARD!!
+            shrinkResources false
+            minifyEnabled false
+            useProguard false
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        // Use JDK 8 to support Lambda
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kapt {
+        correctErrorTypes = true
+        // Exporting schema into this folder whenever db version change
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
+        }
+    }
+
+    dexOptions {
+        preDexLibraries true
+    }
+
+}
+
+dependencies {
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Kotlin
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'androidx.core:core-ktx:0.3'
+
+    // MultiDex
+    implementation 'com.android.support:multidex:1.0.3'
+
+    // Support
+    implementation "com.android.support:support-v4:$google_support_library_version"
+    implementation "com.android.support:appcompat-v7:$google_support_library_version"
+    implementation "com.android.support:design:$google_support_library_version"
+    implementation "com.android.support:recyclerview-v7:$google_support_library_version"
+    implementation "com.android.support:cardview-v7:$google_support_library_version"
+    implementation "com.android.support:leanback-v17:$google_support_library_version"
+
+    // Constraint Layout
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+
+    // Lifecycle
+    // ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation "android.arch.lifecycle:common-java8:1.1.1"
+
+    // Room
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+    kapt "android.arch.persistence.room:compiler:1.1.1"
+
+    // Dagger
+    implementation 'com.google.dagger:dagger:2.16'
+    kapt 'com.google.dagger:dagger-compiler:2.16'
+    implementation "com.google.dagger:dagger-android:2.16"
+    kapt "com.google.dagger:dagger-android-processor:2.16"
+    implementation "com.google.dagger:dagger-android-support:2.16"
+    compileOnly 'org.glassfish:javax.annotation:10.0-b28'
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+
+    // RxJava
+    implementation "io.reactivex.rxjava2:rxjava:2.1.16"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+
+    // RxRelay for RxBus
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+
+    // JSR-310
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.1.0'
+
+    // Gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-analytics:16.0.1'
+    implementation 'com.google.firebase:firebase-firestore:17.0.2'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+
+    // Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.7.0'
+    implementation 'com.google.android.exoplayer:extension-leanback:2.6.1'
+
+    // Test
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    // Stetho (for debug)
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.facebook.stetho:stetho-js-rhino:1.5.0'
+
+}
+
+class Version {
+    def versionCode
+    def versionName
+}
+
+Version readVersion() {
+    Properties defaultVersionProps = new Properties()
+    defaultVersionProps.load(new FileInputStream(file('version.properties')))
+    def defaultBuildVersionCode = defaultVersionProps['VERSION_CODE']
+    def defaultBuildVersionName = defaultVersionProps['VERSION_NAME_PREFIX'] + "." + defaultVersionProps['VERSION_NAME_BUILD']
+
+    return new Version(versionCode: defaultBuildVersionCode, versionName: defaultBuildVersionName)
+}
+
+def increaseVersion() {
+    Properties versionProps = new Properties()
+
+    def file = file('version.properties')
+    versionProps.load(new FileInputStream(file))
+
+    def nextCode = versionProps['VERSION_CODE'].toInteger() + 1
+    versionProps['VERSION_CODE'] = nextCode.toString()
+    def nextBuild = versionProps['VERSION_NAME_BUILD'].toInteger() + 1
+    versionProps['VERSION_NAME_BUILD'] = nextBuild.toString()
+    versionProps.store(file.newWriter(), null)
+
+    def buildVersionCode = versionProps['VERSION_CODE']
+    def buildVersionName = versionProps['VERSION_NAME_PREFIX'] + "." + versionProps['VERSION_NAME_BUILD']
+
+    println "Increase $buildVersionName"
+}
+
+task increaseVersion {
+    doLast {
+        increaseVersion()
+    }
+}
+
+
