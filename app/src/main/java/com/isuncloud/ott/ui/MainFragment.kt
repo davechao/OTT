@@ -22,7 +22,9 @@ class MainFragment: VerticalGridFragment() {
 
     companion object {
         private const val NUM_COLUMNS = 5
-        private const val COLLECTION_PATH = "OTT"
+        private const val COLLECTION_PATH_OTT = "OTT"
+        private const val COLLECTION_PATH_RATINGS = "Ratings"
+        private const val COLLECTION_PATH_DEVICES = "Devices"
     }
 
     lateinit var db: FirebaseFirestore
@@ -30,7 +32,8 @@ class MainFragment: VerticalGridFragment() {
     private var isClickApp = false
 
     private lateinit var startDate: Date
-    private lateinit var documentId: String
+    private lateinit var appId: String
+    private lateinit var ratingId: String
 
     private var sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
 
@@ -56,13 +59,16 @@ class MainFragment: VerticalGridFragment() {
         if(isClickApp) {
             val endDate = Date()
             val duration = (endDate.time - startDate.time) / 1000
-            val appItemMap = hashMapOf<String, Any>()
-            appItemMap["APPETime"] = sdf.format(endDate)
-            appItemMap["APPrunduration"] = duration
 
-            db.collection(COLLECTION_PATH)
-                    .document(documentId)
-                    .set(appItemMap, SetOptions.merge())
+            val ratingsMap = hashMapOf<String, Any>()
+            ratingsMap["APPETime"] = sdf.format(endDate)
+            ratingsMap["APPrunduration"] = duration
+
+            db.collection(COLLECTION_PATH_OTT)
+                    .document(appId)
+                    .collection(COLLECTION_PATH_RATINGS)
+                    .document(ratingId)
+                    .set(ratingsMap, SetOptions.merge())
                     .addOnSuccessListener {
                         Timber.d("data written successfully!")
                     }
@@ -127,17 +133,45 @@ class MainFragment: VerticalGridFragment() {
             if(item is AppItem) {
                 startDate = Date()
 
-                val appItemMap = hashMapOf<String, Any>()
-                appItemMap["DeviceId"] = Build.SERIAL
-                appItemMap["APPId"] = item.appId
-                appItemMap["APPName"] = item.appName
-                appItemMap["APPSTime"] = sdf.format(startDate)
+                var ratingsMap = hashMapOf<String, Any>()
+                ratingsMap["APPSTime"] = sdf.format(startDate)
 
-                db.collection(COLLECTION_PATH)
-                        .add(appItemMap)
+                val appItemMap = hashMapOf<String, Any>()
+                appItemMap["APPName"] = item.appName
+
+                var devicesMap = hashMapOf<String, Any>()
+                devicesMap["DeviceId"] = Build.SERIAL
+
+                db.collection(COLLECTION_PATH_OTT)
+                        .document(item.appId)
+                        .set(appItemMap)
                         .addOnSuccessListener {
-                            documentId = it.id
-                            Timber.d("data written with ID: " + it.id)
+                            appId = item.appId
+                            Timber.d("data written successfully!")
+                        }
+                        .addOnFailureListener {
+                            Timber.d("data written fail!")
+                        }
+
+                db.collection(COLLECTION_PATH_OTT)
+                        .document(item.appId)
+                        .collection(COLLECTION_PATH_DEVICES)
+                        .add(devicesMap)
+                        .addOnSuccessListener {
+                            ratingId = it.id
+                            Timber.d("data written successfully!")
+                        }
+                        .addOnFailureListener {
+                            Timber.d("data written fail!")
+                        }
+
+                db.collection(COLLECTION_PATH_OTT)
+                        .document(item.appId)
+                        .collection(COLLECTION_PATH_RATINGS)
+                        .add(ratingsMap)
+                        .addOnSuccessListener {
+                            ratingId = it.id
+                            Timber.d("data written successfully!")
                         }
                         .addOnFailureListener {
                             Timber.d("data written fail!")
