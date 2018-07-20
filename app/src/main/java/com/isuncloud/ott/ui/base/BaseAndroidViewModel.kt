@@ -1,4 +1,4 @@
-package com.isuncloud.ott.ui
+package com.isuncloud.ott.ui.base
 
 import android.annotation.SuppressLint
 import android.app.Application

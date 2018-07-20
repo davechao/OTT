@@ -6,6 +6,7 @@ import android.os.Build
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.isuncloud.ott.repository.model.app.AppItem
+import com.isuncloud.ott.ui.base.BaseAndroidViewModel
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import java.text.SimpleDateFormat
