@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment
+
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/launcher_fragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:name="com.isuncloud.ott.ui.main.MainFragment"
-    tools:context=".ui.main.MainActivity"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <fragment
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/launcher_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.isuncloud.ott.ui.main.MainFragment"
+        tools:context=".ui.main.MainActivity"/>
+
+</layout>
+
