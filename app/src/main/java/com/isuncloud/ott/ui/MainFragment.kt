@@ -3,7 +3,7 @@ package com.isuncloud.ott.ui.main
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.v17.leanback.app.VerticalGridFragment
+import android.support.v17.leanback.app.VerticalGridSupportFragment
 import android.support.v17.leanback.widget.*
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
@@ -18,8 +18,7 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainFragment: VerticalGridFragment() {
-
+class MainFragment: VerticalGridSupportFragment() {
     companion object {
         private const val NUM_COLUMNS = 5
         private const val COLLECTION_PATH_OTT = "OTT"
@@ -39,6 +38,7 @@ class MainFragment: VerticalGridFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -85,7 +85,7 @@ class MainFragment: VerticalGridFragment() {
         gridPresenter.numberOfColumns = MainFragment.NUM_COLUMNS
         setGridPresenter(gridPresenter)
         title = getString(R.string.main_name)
-        searchAffordanceColor = ContextCompat.getColor(activity, R.color.search_opaque)
+        searchAffordanceColor = ContextCompat.getColor(context!!, R.color.search_opaque)
     }
 
     private fun setupFirestore() {
@@ -103,7 +103,7 @@ class MainFragment: VerticalGridFragment() {
         val intent = Intent(Intent.ACTION_MAIN, null)
         intent.addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER)
 
-        val packageManager = activity.packageManager
+        val packageManager = activity!!.packageManager
         val apps = packageManager.queryIntentActivities(intent, 0)
         apps.forEach {
             if(it.activityInfo.banner != 0) {
@@ -179,9 +179,9 @@ class MainFragment: VerticalGridFragment() {
 
                 isClickApp = true
 
-                val intent = activity.packageManager
+                val intent = activity!!.packageManager
                         .getLeanbackLaunchIntentForPackage(item.appId)
-                activity.startActivity(intent)
+                context!!.startActivity(intent)
             }
         }
     }
