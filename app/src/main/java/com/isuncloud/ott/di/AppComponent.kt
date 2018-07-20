@@ -24,5 +24,4 @@ interface AppComponent {
     }
 
     fun inject(app: OTTApp)
-
 }

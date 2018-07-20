@@ -9,27 +9,34 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.isuncloud.ott.R
 import com.isuncloud.ott.presenter.CardItemPresenter
-import com.isuncloud.ott.repository.ApiRepository
 import com.isuncloud.ott.repository.model.app.AppItem
 import timber.log.Timber
+import java.text.SimpleDateFormat
 import java.util.*
-import javax.inject.Inject
 
 class MainFragment: VerticalGridFragment() {
 
     companion object {
         private const val NUM_COLUMNS = 5
+        private const val COLLECTION_PATH = "OTT"
     }
 
-    @Inject
-    lateinit var apiRepository: ApiRepository
+    lateinit var db: FirebaseFirestore
 
     private var isClickApp = false
 
     private lateinit var startDate: Date
     private lateinit var documentId: String
+
+    private var sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setupView()
@@ -38,6 +45,7 @@ class MainFragment: VerticalGridFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setupFirestore()
         setupListener()
         setupData()
     }
@@ -49,10 +57,12 @@ class MainFragment: VerticalGridFragment() {
             val endDate = Date()
             val duration = (endDate.time - startDate.time) / 1000
             val appItemMap = hashMapOf<String, Any>()
-            appItemMap["APPETime"] = ApiRepository.dateTimeFormat(endDate)
+            appItemMap["APPETime"] = sdf.format(endDate)
             appItemMap["APPrunduration"] = duration
 
-            apiRepository.updateAppItem(appItemMap, documentId)
+            db.collection(COLLECTION_PATH)
+                    .document(documentId)
+                    .set(appItemMap, SetOptions.merge())
                     .addOnSuccessListener {
                         Timber.d("data written successfully!")
                     }
@@ -70,6 +80,10 @@ class MainFragment: VerticalGridFragment() {
         setGridPresenter(gridPresenter)
         title = getString(R.string.main_name)
         searchAffordanceColor = ContextCompat.getColor(activity, R.color.search_opaque)
+    }
+
+    private fun setupFirestore() {
+        db = FirebaseFirestore.getInstance()
     }
 
     private fun setupListener() {
@@ -117,9 +131,10 @@ class MainFragment: VerticalGridFragment() {
                 appItemMap["DeviceId"] = Build.SERIAL
                 appItemMap["APPId"] = item.appId
                 appItemMap["APPName"] = item.appName
-                appItemMap["APPSTime"] = ApiRepository.dateTimeFormat(startDate)
+                appItemMap["APPSTime"] = sdf.format(startDate)
 
-                apiRepository.addAppItem(appItemMap)
+                db.collection(COLLECTION_PATH)
+                        .add(appItemMap)
                         .addOnSuccessListener {
                             documentId = it.id
                             Timber.d("data written with ID: " + it.id)

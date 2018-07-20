@@ -53,12 +53,13 @@ class OTTApp: Application(), HasActivityInjector, LifecycleObserver {
         // JSR-310
         AndroidThreeTen.init(this)
 
-        ottApp = this
-
         // Dagger
         appComponent = DaggerAppComponent.builder()
                 .application(this)
                 .build()
+
+        ottApp = this
+
         appComponent.inject(this)
     }
 

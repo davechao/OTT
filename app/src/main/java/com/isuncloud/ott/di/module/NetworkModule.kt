@@ -3,8 +3,6 @@ package com.isuncloud.ott.di.module
 import android.app.Application
 import com.isuncloud.isuntvmall.utils.SchedulerProvider
 import com.isuncloud.ott.BuildConfig
-import dagger.Module
-import dagger.Provides
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.Cache
@@ -13,6 +11,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
+import dagger.Module
+import dagger.Provides
 import javax.inject.Singleton
 
 @Module
