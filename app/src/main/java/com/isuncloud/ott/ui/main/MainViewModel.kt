@@ -8,6 +8,10 @@ import com.google.firebase.firestore.SetOptions
 import com.isuncloud.ott.repository.model.app.AppItem
 import com.isuncloud.ott.ui.base.BaseAndroidViewModel
 import io.reactivex.disposables.CompositeDisposable
+import org.web3j.crypto.ECKeyPair
+import org.web3j.crypto.Keys
+import org.web3j.crypto.Sign
+import org.web3j.utils.Numeric
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,6 +31,7 @@ class MainViewModel(app: Application) : BaseAndroidViewModel(app) {
     private lateinit var startDate: Date
     private lateinit var appId: String
     private lateinit var ratingId: String
+    private lateinit var ecKeyPair: ECKeyPair
 
     @SuppressLint("StaticFieldLeak")
     private val applicationContext = getApplication<Application>().applicationContext
@@ -114,6 +119,34 @@ class MainViewModel(app: Application) : BaseAndroidViewModel(app) {
                 .addOnFailureListener {
                     Timber.d("data written fail!")
                 }
+    }
+
+    fun createEcKeyPair() {
+        ecKeyPair = Keys.createEcKeyPair()
+        val privateKey = ecKeyPair.privateKey
+        val publicKey= ecKeyPair.publicKey
+
+        val privateKeyBytes = Numeric.toBytesPadded(privateKey, 32)
+        val publicKeyBytes = Numeric.toBytesPadded(publicKey, 64)
+        val privateKeyStr = Numeric.toHexString(privateKeyBytes)
+        val publicKeyStr = Numeric.toHexString(publicKeyBytes)
+
+        Timber.d("PrivateKey: " + privateKeyStr)
+        Timber.d("PublicKey: " + publicKeyStr)
+    }
+
+    fun signData(data: ByteArray) {
+        val hexData = Numeric.toHexString(data)
+        Timber.d("HexData: " + hexData)
+
+        val signatureData = Sign.signMessage(data, ecKeyPair)
+        val r =  Numeric.toHexString(signatureData.r)
+        val s = Numeric.toHexString(signatureData.s)
+        val v = signatureData.v
+
+        Timber.d("r: " + r)
+        Timber.d("s: " + s)
+        Timber.d("v: " + v)
     }
 
 }

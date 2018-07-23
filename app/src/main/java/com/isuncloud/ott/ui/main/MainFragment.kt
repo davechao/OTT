@@ -36,6 +36,8 @@ class MainFragment: VerticalGridSupportFragment() {
         setupViewModel()
         setupListener()
         setupData()
+
+        signData()
     }
 
     override fun onResume() {
@@ -88,6 +90,12 @@ class MainFragment: VerticalGridSupportFragment() {
         }
 
         adapter = cardRowAdapter
+    }
+
+    private fun signData() {
+        val data = "Hello".toByteArray()
+        viewModel.createEcKeyPair()
+        viewModel.signData(data)
     }
 
     private inner class ItemViewClickedListener: OnItemViewClickedListener {
