@@ -36,8 +36,7 @@ class MainFragment: VerticalGridSupportFragment() {
         setupViewModel()
         setupListener()
         setupData()
-
-        signData()
+        createECKey()
     }
 
     override fun onResume() {
@@ -92,9 +91,12 @@ class MainFragment: VerticalGridSupportFragment() {
         adapter = cardRowAdapter
     }
 
+    private fun createECKey() {
+        viewModel.createEcKeyPair()
+    }
+
     private fun signData() {
         val data = "Hello".toByteArray()
-        viewModel.createEcKeyPair()
         viewModel.signData(data)
     }
 
@@ -107,6 +109,8 @@ class MainFragment: VerticalGridSupportFragment() {
             if(item is AppItem) {
                 viewModel.enterApp(item)
                 viewModel.isClickApp = true
+
+                signData()
 
                 val intent = activity!!.packageManager
                         .getLeanbackLaunchIntentForPackage(item.appId)
