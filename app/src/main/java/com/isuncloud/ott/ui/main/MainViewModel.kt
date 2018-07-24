@@ -3,10 +3,11 @@ package com.isuncloud.ott.ui
 import android.app.Application
 import android.os.Build
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
-import com.isuncloud.ott.repository.model.app.AppItem
+import com.isuncloud.isuntvmall.database.typeconverter.LocalDateTimeConverter
+import com.isuncloud.ott.repository.model.AppItem
 import com.isuncloud.ott.ui.base.BaseAndroidViewModel
 import io.reactivex.disposables.CompositeDisposable
+import org.threeten.bp.LocalDateTime
 import org.web3j.crypto.ECKeyPair
 import org.web3j.crypto.Hash
 import org.web3j.crypto.Keys
@@ -15,13 +16,13 @@ import org.web3j.utils.Numeric
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import com.google.gson.Gson
+import kotlin.collections.HashMap
 
 class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
     companion object {
         private const val COLLECTION_PATH_OTT = "OTT"
-        private const val COLLECTION_PATH_RATINGS = "Ratings"
-        private const val COLLECTION_PATH_DEVICES = "Devices"
     }
 
     private var sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
@@ -29,8 +30,6 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
     var isClickApp = false
 
     private lateinit var startDate: Date
-    private lateinit var appId: String
-    private lateinit var ratingId: String
     private lateinit var ecKeyPair: ECKeyPair
 
     private val applicationContext = app.applicationContext
@@ -38,6 +37,10 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
     private val compositeDisposable by lazy { CompositeDisposable() }
 
     lateinit var db: FirebaseFirestore
+
+    lateinit var appItem: AppItem
+
+    lateinit var signDataMap: HashMap<String, Any>
 
     override fun onCleared() {
         compositeDisposable.clear()
@@ -53,65 +56,40 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
     }
 
     fun enterApp(item: AppItem) {
+        appItem = item
         startDate = Date()
-        var ratingsMap = hashMapOf<String, Any>()
-        ratingsMap["APPSTime"] = sdf.format(startDate)
-
-        val appItemMap = hashMapOf<String, Any>()
-        appItemMap["APPName"] = item.appName
-
-        var devicesMap = hashMapOf<String, Any>()
-        devicesMap["DeviceId"] = Build.SERIAL
-
-        db.collection(COLLECTION_PATH_OTT)
-                .document(item.appId)
-                .set(appItemMap)
-                .addOnSuccessListener {
-                    appId = item.appId
-                    Timber.d("data written successfully!")
-                }
-                .addOnFailureListener {
-                    Timber.d("data written fail!")
-                }
-
-        db.collection(COLLECTION_PATH_OTT)
-                .document(item.appId)
-                .collection(COLLECTION_PATH_DEVICES)
-                .add(devicesMap)
-                .addOnSuccessListener {
-                    ratingId = it.id
-                    Timber.d("data written successfully!")
-                }
-                .addOnFailureListener {
-                    Timber.d("data written fail!")
-                }
-
-        db.collection(COLLECTION_PATH_OTT)
-                .document(item.appId)
-                .collection(COLLECTION_PATH_RATINGS)
-                .add(ratingsMap)
-                .addOnSuccessListener {
-                    ratingId = it.id
-                    Timber.d("data written successfully!")
-                }
-                .addOnFailureListener {
-                    Timber.d("data written fail!")
-                }
     }
 
     fun exitApp() {
         val endDate = Date()
         val duration = (endDate.time - startDate.time) / 1000
+        val createTimestamp = LocalDateTimeConverter().dateToTimestamp(LocalDateTime.now())
 
         val ratingsMap = hashMapOf<String, Any>()
-        ratingsMap["APPETime"] = sdf.format(endDate)
-        ratingsMap["APPrunduration"] = duration
+        ratingsMap["AppSTime"] = sdf.format(startDate)
+        ratingsMap["AppETime"] = sdf.format(endDate)
+        ratingsMap["AppRunduration"] = duration
+
+        val appDataMap = hashMapOf<String, Any>()
+        appDataMap["AppId"] = appItem.appId
+        appDataMap["AppName"] = appItem.appName
+        appDataMap["Ratings"] = ratingsMap
+
+        val dataJson = Gson().toJson(appDataMap)
+        Timber.d("data: " + dataJson)
+
+        val data = dataJson.toByteArray()
+        signData(data)
+
+        val ottMap = hashMapOf<String, Any>()
+        ottMap["DeviceId"] = Build.SERIAL
+        ottMap["AppData"] = appDataMap
+        ottMap["SignData"] = signDataMap
+        ottMap["CreateTimestamp"] = createTimestamp.toString()
 
         db.collection(COLLECTION_PATH_OTT)
-                .document(appId)
-                .collection(COLLECTION_PATH_RATINGS)
-                .document(ratingId)
-                .set(ratingsMap, SetOptions.merge())
+                .document()
+                .set(ottMap)
                 .addOnSuccessListener {
                     Timber.d("data written successfully!")
                 }
@@ -141,11 +119,20 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
         val signatureData = Sign.signMessage(data, ecKeyPair)
         val r =  Numeric.toHexString(signatureData.r)
         val s = Numeric.toHexString(signatureData.s)
-        val v = signatureData.v
+        val v = signatureData.v.toInt()
 
         Timber.d("r: " + r)
         Timber.d("s: " + s)
         Timber.d("v: " + v)
+
+        val sigMap = hashMapOf<String, Any>()
+        sigMap["R"] = r
+        sigMap["S"] = s
+        sigMap["V"] = v
+
+        signDataMap = hashMapOf()
+        signDataMap["HashData"] = Numeric.toHexString(hashData)
+        signDataMap["Sig"] = sigMap
     }
 
 }

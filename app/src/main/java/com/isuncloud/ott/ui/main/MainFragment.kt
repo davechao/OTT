@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.isuncloud.ott.R
 import com.isuncloud.ott.presenter.CardItemPresenter
-import com.isuncloud.ott.repository.model.app.AppItem
+import com.isuncloud.ott.repository.model.AppItem
 import com.isuncloud.ott.ui.MainViewModel
 
 class MainFragment: VerticalGridSupportFragment() {
@@ -95,11 +95,6 @@ class MainFragment: VerticalGridSupportFragment() {
         viewModel.createEcKeyPair()
     }
 
-    private fun signData() {
-        val data = "Hello".toByteArray()
-        viewModel.signData(data)
-    }
-
     private inner class ItemViewClickedListener: OnItemViewClickedListener {
         override fun onItemClicked(
                 itemViewHolder: Presenter.ViewHolder?,
@@ -109,8 +104,6 @@ class MainFragment: VerticalGridSupportFragment() {
             if(item is AppItem) {
                 viewModel.enterApp(item)
                 viewModel.isClickApp = true
-
-                signData()
 
                 val intent = activity!!.packageManager
                         .getLeanbackLaunchIntentForPackage(item.appId)

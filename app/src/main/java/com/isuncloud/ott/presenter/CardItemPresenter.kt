@@ -7,7 +7,7 @@ import android.text.TextUtils
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.isuncloud.ott.R
-import com.isuncloud.ott.repository.model.app.AppItem
+import com.isuncloud.ott.repository.model.AppItem
 import kotlin.properties.Delegates
 
 class CardItemPresenter: Presenter() {

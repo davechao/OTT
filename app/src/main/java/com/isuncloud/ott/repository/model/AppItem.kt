@@ -1,4 +1,4 @@
-package com.isuncloud.ott.repository.model.app
+package com.isuncloud.ott.repository.model
 
 import android.graphics.drawable.Drawable
 
