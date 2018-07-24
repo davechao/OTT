@@ -17,6 +17,7 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import com.google.gson.Gson
+import com.isuncloud.isuntvmall.utils.RandomIDGenerator
 import kotlin.collections.HashMap
 
 class MainViewModel(app: Application): BaseAndroidViewModel(app) {
@@ -49,6 +50,7 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
     init {
         setupFirestore()
+        Timber.d("FackId: " + RandomIDGenerator.generated())
     }
 
     private fun setupFirestore() {
