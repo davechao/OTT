@@ -1,6 +1,5 @@
 package com.isuncloud.ott.ui
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
 import com.google.firebase.firestore.FirebaseFirestore
@@ -9,6 +8,7 @@ import com.isuncloud.ott.repository.model.app.AppItem
 import com.isuncloud.ott.ui.base.BaseAndroidViewModel
 import io.reactivex.disposables.CompositeDisposable
 import org.web3j.crypto.ECKeyPair
+import org.web3j.crypto.Hash
 import org.web3j.crypto.Keys
 import org.web3j.crypto.Sign
 import org.web3j.utils.Numeric
@@ -16,7 +16,7 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainViewModel(app: Application) : BaseAndroidViewModel(app) {
+class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
     companion object {
         private const val COLLECTION_PATH_OTT = "OTT"
@@ -33,8 +33,7 @@ class MainViewModel(app: Application) : BaseAndroidViewModel(app) {
     private lateinit var ratingId: String
     private lateinit var ecKeyPair: ECKeyPair
 
-    @SuppressLint("StaticFieldLeak")
-    private val applicationContext = getApplication<Application>().applicationContext
+    private val applicationContext = app.applicationContext
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
@@ -136,8 +135,8 @@ class MainViewModel(app: Application) : BaseAndroidViewModel(app) {
     }
 
     fun signData(data: ByteArray) {
-        val hexData = Numeric.toHexString(data)
-        Timber.d("HexData: " + hexData)
+        val hashData = Hash.sha3(data)
+        Timber.d("hashData: " + Numeric.toHexString(hashData))
 
         val signatureData = Sign.signMessage(data, ecKeyPair)
         val r =  Numeric.toHexString(signatureData.r)

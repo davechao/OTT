@@ -1,22 +1,17 @@
 package com.isuncloud.ott.ui.base
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.databinding.Observable
 import android.databinding.PropertyChangeRegistry
 import io.reactivex.disposables.CompositeDisposable
-import javax.inject.Inject
 
-open class BaseAndroidViewModel @Inject constructor(
-        application: Application)
-    : AndroidViewModel(application), Observable {
+open class BaseAndroidViewModel(app: Application): AndroidViewModel(app), Observable {
 
     @Transient
     private var mCallbacks: PropertyChangeRegistry? = null
 
-    @SuppressLint("StaticFieldLeak")
-    private val applicationContext = getApplication<Application>().applicationContext // To avoid leaks, only use Application Context.
+    private val applicationContext = app.applicationContext
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
