@@ -50,7 +50,7 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
     init {
         setupFirestore()
-        Timber.d("FackId: " + RandomIDGenerator.generated())
+        Timber.d("FakeId: " + RandomIDGenerator.generated())
     }
 
     private fun setupFirestore() {
