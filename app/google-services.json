@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "824136448168",
+    "firebase_url": "https://ottapp-7f6f8.firebaseio.com",
+    "project_id": "ottapp-7f6f8",
+    "storage_bucket": "ottapp-7f6f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824136448168:android:2501286e963f3d93",
+        "android_client_info": {
+          "package_name": "com.isuncloud.ott"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824136448168-gt5frs0e99880lo6iiqrlq6m24g3umcf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.isuncloud.ott",
+            "certificate_hash": "1bcc900ad12c1299788a1f4a9842f93162d3d61a"
+          }
+        },
+        {
+          "client_id": "824136448168-mq3s3o86iav267vi1us7ldc4olneqlm7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByUoSXhcgkOv5r_PkzqNv_nBvBcuDVEQ4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824136448168-mq3s3o86iav267vi1us7ldc4olneqlm7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
