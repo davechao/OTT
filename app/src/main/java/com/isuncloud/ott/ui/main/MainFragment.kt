@@ -68,24 +68,29 @@ class MainFragment: VerticalGridSupportFragment() {
         var cardRowAdapter = ArrayObjectAdapter(CardItemPresenter())
 
         val intent = Intent(Intent.ACTION_MAIN, null)
-        intent.addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
 
         val packageManager = activity!!.packageManager
         val apps = packageManager.queryIntentActivities(intent, 0)
         apps.forEach {
-            if(it.activityInfo.banner != 0) {
-                val appInfo = AppItem(
-                        it.activityInfo.packageName,
-                        it.loadLabel(packageManager).toString(),
-                        it.activityInfo.loadBanner(packageManager))
-                cardRowAdapter.add(appInfo)
-            } else {
-                val appInfo = AppItem(
-                        it.activityInfo.packageName,
-                        it.loadLabel(packageManager).toString(),
-                        it.activityInfo.loadIcon(packageManager))
-                cardRowAdapter.add(appInfo)
-            }
+//            if(it.activityInfo.banner != 0) {
+//                val appInfo = AppItem(
+//                        it.activityInfo.packageName,
+//                        it.loadLabel(packageManager).toString(),
+//                        it.activityInfo.loadIcon(packageManager))
+//                cardRowAdapter.add(appInfo)
+//            } else {
+//                val appInfo = AppItem(
+//                        it.activityInfo.packageName,
+//                        it.loadLabel(packageManager).toString(),
+//                        it.activityInfo.loadIcon(packageManager))
+//                cardRowAdapter.add(appInfo)
+//            }
+            val appInfo = AppItem(
+                    it.activityInfo.packageName,
+                    it.loadLabel(packageManager).toString(),
+                    it.activityInfo.loadIcon(packageManager))
+            cardRowAdapter.add(appInfo)
         }
 
         adapter = cardRowAdapter
@@ -105,8 +110,10 @@ class MainFragment: VerticalGridSupportFragment() {
                 viewModel.enterApp(item)
                 viewModel.isClickApp = true
 
+//                val intent = activity!!.packageManager
+//                        .getLeanbackLaunchIntentForPackage(item.appId)
                 val intent = activity!!.packageManager
-                        .getLeanbackLaunchIntentForPackage(item.appId)
+                        .getLaunchIntentForPackage(item.appId)
                 context!!.startActivity(intent)
             }
         }
