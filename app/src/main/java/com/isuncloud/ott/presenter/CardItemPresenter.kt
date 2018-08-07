@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.isuncloud.ott.R
 import com.isuncloud.ott.repository.model.AppItem
+import java.util.*
 import kotlin.properties.Delegates
 
 class CardItemPresenter: Presenter() {
@@ -19,6 +20,8 @@ class CardItemPresenter: Presenter() {
 
     private var defaultBackgroundColor: Int by Delegates.notNull()
     private var selectedBackgroundColor: Int by Delegates.notNull()
+
+    private var random = Random()
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
         defaultBackgroundColor = ContextCompat.getColor(parent.context, R.color.default_background)
@@ -32,6 +35,14 @@ class CardItemPresenter: Presenter() {
         }
         imageCardView.isFocusable = true
         imageCardView.isFocusableInTouchMode = true
+
+        imageCardView.setMainImageDimensions(CARD_WIDTH, CARD_HEIGHT)
+        imageCardView.setMainImageScaleType(ImageView.ScaleType.FIT_CENTER)
+
+//        val height = CARD_HEIGHT + random.nextInt(CARD_HEIGHT / 2)
+//        imageCardView.setMainImageDimensions(CARD_WIDTH, height)
+//        imageCardView.setMainImageScaleType(ImageView.ScaleType.FIT_CENTER)
+
         updateCardBackgroundColor(imageCardView, false)
 
         return ViewHolder(imageCardView)
@@ -43,8 +54,6 @@ class CardItemPresenter: Presenter() {
             if(!TextUtils.isEmpty(item.appId)) {
                 imageCardView.titleText = item.appName
                 imageCardView.contentText = item.appId
-                imageCardView.setMainImageDimensions(CARD_WIDTH, CARD_HEIGHT)
-                imageCardView.setMainImageScaleType(ImageView.ScaleType.FIT_CENTER)
                 imageCardView.mainImage = item.icon
             }
         }

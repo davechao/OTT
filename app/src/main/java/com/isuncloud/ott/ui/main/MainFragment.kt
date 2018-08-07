@@ -22,10 +22,6 @@ class MainFragment: VerticalGridSupportFragment() {
 
     private lateinit var viewModel: MainViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setupView()
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -73,19 +69,6 @@ class MainFragment: VerticalGridSupportFragment() {
         val packageManager = activity!!.packageManager
         val apps = packageManager.queryIntentActivities(intent, 0)
         apps.forEach {
-//            if(it.activityInfo.banner != 0) {
-//                val appInfo = AppItem(
-//                        it.activityInfo.packageName,
-//                        it.loadLabel(packageManager).toString(),
-//                        it.activityInfo.loadIcon(packageManager))
-//                cardRowAdapter.add(appInfo)
-//            } else {
-//                val appInfo = AppItem(
-//                        it.activityInfo.packageName,
-//                        it.loadLabel(packageManager).toString(),
-//                        it.activityInfo.loadIcon(packageManager))
-//                cardRowAdapter.add(appInfo)
-//            }
             val appInfo = AppItem(
                     it.activityInfo.packageName,
                     it.loadLabel(packageManager).toString(),
@@ -110,8 +93,6 @@ class MainFragment: VerticalGridSupportFragment() {
                 viewModel.enterApp(item)
                 viewModel.isClickApp = true
 
-//                val intent = activity!!.packageManager
-//                        .getLeanbackLaunchIntentForPackage(item.appId)
                 val intent = activity!!.packageManager
                         .getLaunchIntentForPackage(item.appId)
                 context!!.startActivity(intent)

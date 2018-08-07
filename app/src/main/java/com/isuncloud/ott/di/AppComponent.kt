@@ -4,6 +4,7 @@ import android.app.Application
 import com.isuncloud.ott.OTTApp
 import com.isuncloud.ott.di.module.AppModule
 import com.isuncloud.ott.di.module.NetworkModule
+import com.isuncloud.ott.ui.MainViewModel
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -24,4 +25,5 @@ interface AppComponent {
     }
 
     fun inject(app: OTTApp)
+    fun inject(mainViewModel: MainViewModel)
 }

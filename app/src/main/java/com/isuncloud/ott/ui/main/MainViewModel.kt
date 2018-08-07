@@ -17,7 +17,9 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import com.google.gson.Gson
-import com.isuncloud.isuntvmall.utils.RandomIDGenerator
+import com.isuncloud.ott.OTTApp
+import com.isuncloud.ott.repository.ApiRepository
+import javax.inject.Inject
 import kotlin.collections.HashMap
 
 class MainViewModel(app: Application): BaseAndroidViewModel(app) {
@@ -43,14 +45,17 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
     lateinit var signDataMap: HashMap<String, Any>
 
+    @Inject
+    lateinit var apiRepository: ApiRepository
+
     override fun onCleared() {
         compositeDisposable.clear()
         compositeDisposable.dispose()
     }
 
     init {
+        OTTApp.getAppComponent().inject(this)
         setupFirestore()
-        Timber.d("FakeId: " + RandomIDGenerator.generated())
     }
 
     private fun setupFirestore() {
