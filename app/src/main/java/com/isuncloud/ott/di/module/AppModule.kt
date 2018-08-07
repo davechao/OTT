@@ -2,6 +2,7 @@ package com.isuncloud.ott.di.module
 
 import android.app.Application
 import android.arch.persistence.room.Room
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -43,5 +44,9 @@ class AppModule {
                 .fallbackToDestructiveMigration()
         return builder.build()
     }
+
+    @Provides
+    @Singleton
+    fun providesFirebaseFirestore() = FirebaseFirestore.getInstance()
 
 }

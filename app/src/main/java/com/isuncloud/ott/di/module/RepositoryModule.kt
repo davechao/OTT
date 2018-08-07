@@ -25,10 +25,6 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesFirebaseFirestore() = FirebaseFirestore.getInstance()
-
-    @Provides
-    @Singleton
     fun provideFireStoreRepository(firestore: FirebaseFirestore, cryptoRepository: CryptoRepository)
             = FireStoreRepository(firestore, cryptoRepository)
 
