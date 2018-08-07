@@ -1,3 +1,3 @@
-package com.isuncloud.isuntvmall.event
+package com.isuncloud.ott.event
 
 open class BaseRxEvent

@@ -1,4 +1,4 @@
-package com.isuncloud.isuntvmall.app
+package com.isuncloud.ott.app
 
 import android.content.Context
 import android.text.TextUtils

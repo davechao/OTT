@@ -4,6 +4,7 @@ import android.app.Application
 import com.isuncloud.ott.OTTApp
 import com.isuncloud.ott.di.module.AppModule
 import com.isuncloud.ott.di.module.NetworkModule
+import com.isuncloud.ott.di.module.RepositoryModule
 import com.isuncloud.ott.ui.MainViewModel
 import dagger.BindsInstance
 import dagger.Component
@@ -14,7 +15,8 @@ import javax.inject.Singleton
 @Component(modules = [
     (AndroidSupportInjectionModule::class),
     (AppModule::class),
-    (NetworkModule::class)])
+    (NetworkModule::class),
+    (RepositoryModule::class)])
 interface AppComponent {
 
     @Component.Builder

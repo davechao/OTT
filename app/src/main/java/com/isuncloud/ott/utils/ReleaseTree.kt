@@ -1,4 +1,4 @@
-package com.isuncloud.isuntvmall.utils
+package com.isuncloud.ott.utils
 
 import android.util.Log.ERROR
 import android.util.Log.WARN

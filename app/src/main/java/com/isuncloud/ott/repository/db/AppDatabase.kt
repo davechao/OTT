@@ -1,9 +1,9 @@
-package com.isuncloud.isuntvmall.database
+package com.isuncloud.ott.database
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.TypeConverters
 import android.arch.persistence.room.RoomDatabase
-import com.isuncloud.isuntvmall.database.typeconverter.LocalDateTimeConverter
+import com.isuncloud.ott.database.typeconverter.LocalDateTimeConverter
 
 //@Database(
 //        entities = [],

@@ -4,19 +4,17 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.isuncloud.ott.repository.model.AppItem
 import org.web3j.crypto.ECKeyPair
-import org.web3j.crypto.Hash
-import org.web3j.crypto.Sign
 import org.web3j.utils.Numeric
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.collections.HashMap
 
 @Singleton
 class FireStoreRepository @Inject constructor(
-        val firestore: FirebaseFirestore) {
+        val firestore: FirebaseFirestore,
+        val cryptoRepository: CryptoRepository) {
 
     companion object {
         private const val COLLECTION_PATH_OTT = "OTT"
@@ -24,9 +22,7 @@ class FireStoreRepository @Inject constructor(
 
     private var sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
 
-    lateinit var signDataMap: HashMap<String, Any>
-
-    fun sendFireStoreData(
+    fun sendDataToFireStore(
             startDate: Date,
             endDate: Date,
             appItem: AppItem,
@@ -49,7 +45,18 @@ class FireStoreRepository @Inject constructor(
         Timber.d("data: " + dataJson)
 
         val data = dataJson.toByteArray()
-        signData(data, ecKeyPair)
+        val signItem = cryptoRepository.signData(data, ecKeyPair)
+        val hashData = signItem.hashData
+        val sig = signItem.sig
+
+        val sigMap = hashMapOf<String, Any>()
+        sigMap["R"] = sig.r
+        sigMap["S"] = sig.s
+        sigMap["V"] = sig.v
+
+        val signDataMap = hashMapOf<String, Any>()
+        signDataMap["HashData"] = Numeric.toHexString(hashData)
+        signDataMap["Sig"] = sigMap
 
         val ottMap = hashMapOf<String, Any>()
         ottMap["DeviceId"] = androidId
@@ -65,29 +72,6 @@ class FireStoreRepository @Inject constructor(
                 .addOnFailureListener {
                     Timber.d("data written fail!")
                 }
-    }
-
-    fun signData(data: ByteArray, ecKeyPair: ECKeyPair) {
-        val hashData = Hash.sha3(data)
-        Timber.d("hashData: " + Numeric.toHexString(hashData))
-
-        val signatureData = Sign.signMessage(data, ecKeyPair)
-        val r =  Numeric.toHexString(signatureData.r)
-        val s = Numeric.toHexString(signatureData.s)
-        val v = signatureData.v.toInt()
-
-        Timber.d("r: " + r)
-        Timber.d("s: " + s)
-        Timber.d("v: " + v)
-
-        val sigMap = hashMapOf<String, Any>()
-        sigMap["R"] = r
-        sigMap["S"] = s
-        sigMap["V"] = v
-
-        signDataMap = hashMapOf()
-        signDataMap["HashData"] = Numeric.toHexString(hashData)
-        signDataMap["Sig"] = sigMap
     }
 
 }

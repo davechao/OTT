@@ -2,14 +2,13 @@ package com.isuncloud.ott.di.module
 
 import android.app.Application
 import android.arch.persistence.room.Room
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.isuncloud.isuntvmall.app.EventPublishSubject
-import com.isuncloud.isuntvmall.app.Pref
-import com.isuncloud.isuntvmall.database.AppDatabase
-import com.isuncloud.isuntvmall.event.BaseRxEvent
+import com.isuncloud.ott.app.EventPublishSubject
+import com.isuncloud.ott.app.Pref
+import com.isuncloud.ott.database.AppDatabase
+import com.isuncloud.ott.event.BaseRxEvent
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

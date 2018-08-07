@@ -17,7 +17,6 @@ import javax.inject.Inject
 
 class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
-
     private val applicationContext = app.applicationContext
 
     private val compositeDisposable by lazy { CompositeDisposable() }
@@ -28,7 +27,7 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
     private lateinit var ecKeyPair: ECKeyPair
 
     var isClickApp = false
-    
+
     @Inject
     lateinit var firestore: FirebaseFirestore
 
@@ -54,8 +53,7 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
     fun exitApp() {
         val endDate = Date()
-
-        fireStoreRepository.sendFireStoreData(
+        fireStoreRepository.sendDataToFireStore(
                 startDate,
                 endDate,
                 appItem,

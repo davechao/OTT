@@ -1,4 +1,4 @@
-package com.isuncloud.isuntvmall.app
+package com.isuncloud.ott.app
 
 import android.content.Context
 import com.google.gson.Gson

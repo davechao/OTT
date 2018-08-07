@@ -1,4 +1,4 @@
-package com.isuncloud.isuntvmall.event
+package com.isuncloud.ott.event
 
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData

@@ -9,9 +9,9 @@ import android.arch.lifecycle.ProcessLifecycleOwner
 import android.content.Context
 import android.support.multidex.MultiDex
 import com.facebook.stetho.Stetho
-import com.isuncloud.isuntvmall.utils.ReleaseTree
 import com.isuncloud.ott.di.AppComponent
 import com.isuncloud.ott.di.DaggerAppComponent
+import com.isuncloud.ott.utils.ReleaseTree
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
