@@ -17,19 +17,18 @@ import javax.inject.Inject
 
 class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
-    var isClickApp = false
-
-    private lateinit var startDate: Date
-    private lateinit var ecKeyPair: ECKeyPair
 
     private val applicationContext = app.applicationContext
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
-    lateinit var appItem: AppItem
-
     lateinit var androidId: String
+    private lateinit var startDate: Date
+    private lateinit var appItem: AppItem
+    private lateinit var ecKeyPair: ECKeyPair
 
+    var isClickApp = false
+    
     @Inject
     lateinit var firestore: FirebaseFirestore
 
