@@ -3,7 +3,6 @@ package com.isuncloud.ott.repository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.isuncloud.ott.repository.model.AppItem
-import org.web3j.crypto.ECKeyPair
 import org.web3j.utils.Numeric
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -26,8 +25,9 @@ class FireStoreRepository @Inject constructor(
             startDate: Date,
             endDate: Date,
             appItem: AppItem,
-            androidId: String,
-            ecKeyPair: ECKeyPair) {
+            androidId: String) {
+
+        val ecKeyPair = cryptoRepository.getEcKeyPair()
 
         val duration = (endDate.time - startDate.time) / 1000
 

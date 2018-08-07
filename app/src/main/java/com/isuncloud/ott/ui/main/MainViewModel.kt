@@ -8,11 +8,8 @@ import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 import com.isuncloud.ott.OTTApp
 import com.isuncloud.ott.repository.ApiRepository
+import com.isuncloud.ott.repository.CryptoRepository
 import com.isuncloud.ott.repository.FireStoreRepository
-import org.web3j.crypto.ECKeyPair
-import org.web3j.crypto.Keys
-import org.web3j.utils.Numeric
-import timber.log.Timber
 import javax.inject.Inject
 
 class MainViewModel(app: Application): BaseAndroidViewModel(app) {
@@ -24,7 +21,6 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
     lateinit var androidId: String
     private lateinit var startDate: Date
     private lateinit var appItem: AppItem
-    private lateinit var ecKeyPair: ECKeyPair
 
     var isClickApp = false
 
@@ -33,6 +29,9 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
     @Inject
     lateinit var fireStoreRepository: FireStoreRepository
+
+    @Inject
+    lateinit var cryptoRepository: CryptoRepository
 
     @Inject
     lateinit var apiRepository: ApiRepository
@@ -57,22 +56,11 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
                 startDate,
                 endDate,
                 appItem,
-                androidId,
-                ecKeyPair)
+                androidId)
     }
 
     fun createEcKeyPair() {
-        ecKeyPair = Keys.createEcKeyPair()
-        val privateKey = ecKeyPair.privateKey
-        val publicKey= ecKeyPair.publicKey
-
-        val privateKeyBytes = Numeric.toBytesPadded(privateKey, 32)
-        val publicKeyBytes = Numeric.toBytesPadded(publicKey, 64)
-        val privateKeyStr = Numeric.toHexString(privateKeyBytes)
-        val publicKeyStr = Numeric.toHexString(publicKeyBytes)
-
-        Timber.d("PrivateKey: " + privateKeyStr)
-        Timber.d("PublicKey: " + publicKeyStr)
+        cryptoRepository.createEcKeyPair()
     }
 
 }
