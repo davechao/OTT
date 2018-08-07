@@ -1,34 +1,21 @@
 package com.isuncloud.ott.ui
 
 import android.app.Application
-import android.os.Build
 import com.google.firebase.firestore.FirebaseFirestore
-import com.isuncloud.isuntvmall.database.typeconverter.LocalDateTimeConverter
 import com.isuncloud.ott.repository.model.AppItem
 import com.isuncloud.ott.ui.base.BaseAndroidViewModel
 import io.reactivex.disposables.CompositeDisposable
-import org.threeten.bp.LocalDateTime
-import org.web3j.crypto.ECKeyPair
-import org.web3j.crypto.Hash
-import org.web3j.crypto.Keys
-import org.web3j.crypto.Sign
-import org.web3j.utils.Numeric
-import timber.log.Timber
-import java.text.SimpleDateFormat
 import java.util.*
-import com.google.gson.Gson
 import com.isuncloud.ott.OTTApp
 import com.isuncloud.ott.repository.ApiRepository
+import com.isuncloud.ott.repository.FireStoreRepository
+import org.web3j.crypto.ECKeyPair
+import org.web3j.crypto.Keys
+import org.web3j.utils.Numeric
+import timber.log.Timber
 import javax.inject.Inject
-import kotlin.collections.HashMap
 
 class MainViewModel(app: Application): BaseAndroidViewModel(app) {
-
-    companion object {
-        private const val COLLECTION_PATH_OTT = "OTT"
-    }
-
-    private var sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
 
     var isClickApp = false
 
@@ -39,11 +26,15 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
-    lateinit var db: FirebaseFirestore
-
     lateinit var appItem: AppItem
 
-    lateinit var signDataMap: HashMap<String, Any>
+    lateinit var androidId: String
+
+    @Inject
+    lateinit var firestore: FirebaseFirestore
+
+    @Inject
+    lateinit var fireStoreRepository: FireStoreRepository
 
     @Inject
     lateinit var apiRepository: ApiRepository
@@ -55,11 +46,6 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
     init {
         OTTApp.getAppComponent().inject(this)
-        setupFirestore()
-    }
-
-    private fun setupFirestore() {
-        db = FirebaseFirestore.getInstance()
     }
 
     fun enterApp(item: AppItem) {
@@ -69,40 +55,13 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
     fun exitApp() {
         val endDate = Date()
-        val duration = (endDate.time - startDate.time) / 1000
-        val createTimestamp = LocalDateTimeConverter().dateToTimestamp(LocalDateTime.now())
 
-        val ratingsMap = hashMapOf<String, Any>()
-        ratingsMap["AppSTime"] = sdf.format(startDate)
-        ratingsMap["AppETime"] = sdf.format(endDate)
-        ratingsMap["AppRunduration"] = duration
-
-        val appDataMap = hashMapOf<String, Any>()
-        appDataMap["AppId"] = appItem.appId
-        appDataMap["AppName"] = appItem.appName
-        appDataMap["Ratings"] = ratingsMap
-
-        val dataJson = Gson().toJson(appDataMap)
-        Timber.d("data: " + dataJson)
-
-        val data = dataJson.toByteArray()
-        signData(data)
-
-        val ottMap = hashMapOf<String, Any>()
-        ottMap["DeviceId"] = Build.SERIAL
-        ottMap["AppData"] = appDataMap
-        ottMap["SignData"] = signDataMap
-        ottMap["CreateTimestamp"] = createTimestamp.toString()
-
-        db.collection(COLLECTION_PATH_OTT)
-                .document()
-                .set(ottMap)
-                .addOnSuccessListener {
-                    Timber.d("data written successfully!")
-                }
-                .addOnFailureListener {
-                    Timber.d("data written fail!")
-                }
+        fireStoreRepository.sendFireStoreData(
+                startDate,
+                endDate,
+                appItem,
+                androidId,
+                ecKeyPair)
     }
 
     fun createEcKeyPair() {
@@ -117,29 +76,6 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
         Timber.d("PrivateKey: " + privateKeyStr)
         Timber.d("PublicKey: " + publicKeyStr)
-    }
-
-    fun signData(data: ByteArray) {
-        val hashData = Hash.sha3(data)
-        Timber.d("hashData: " + Numeric.toHexString(hashData))
-
-        val signatureData = Sign.signMessage(data, ecKeyPair)
-        val r =  Numeric.toHexString(signatureData.r)
-        val s = Numeric.toHexString(signatureData.s)
-        val v = signatureData.v.toInt()
-
-        Timber.d("r: " + r)
-        Timber.d("s: " + s)
-        Timber.d("v: " + v)
-
-        val sigMap = hashMapOf<String, Any>()
-        sigMap["R"] = r
-        sigMap["S"] = s
-        sigMap["V"] = v
-
-        signDataMap = hashMapOf()
-        signDataMap["HashData"] = Numeric.toHexString(hashData)
-        signDataMap["Sig"] = sigMap
     }
 
 }

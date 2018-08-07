@@ -3,9 +3,9 @@ package com.isuncloud.ott.ui.main
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings.Secure
 import android.support.v17.leanback.app.VerticalGridSupportFragment
 import android.support.v17.leanback.widget.*
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +32,8 @@ class MainFragment: VerticalGridSupportFragment() {
         setupViewModel()
         setupListener()
         setupData()
+
+        // TODO: if it has network connected, then createECKey
         createECKey()
     }
 
@@ -48,7 +50,6 @@ class MainFragment: VerticalGridSupportFragment() {
         gridPresenter.numberOfColumns = MainFragment.NUM_COLUMNS
         setGridPresenter(gridPresenter)
         title = getString(R.string.main_name)
-        searchAffordanceColor = ContextCompat.getColor(context!!, R.color.search_opaque)
     }
 
     private fun setupViewModel() {
@@ -57,10 +58,11 @@ class MainFragment: VerticalGridSupportFragment() {
 
     private fun setupListener() {
         onItemViewClickedListener = ItemViewClickedListener()
-        setOnItemViewSelectedListener(ItemViewSelectedListener())
     }
 
     private fun setupData() {
+        viewModel.androidId = Secure.getString(activity?.contentResolver, Secure.ANDROID_ID)
+
         var cardRowAdapter = ArrayObjectAdapter(CardItemPresenter())
 
         val intent = Intent(Intent.ACTION_MAIN, null)
@@ -97,16 +99,6 @@ class MainFragment: VerticalGridSupportFragment() {
                         .getLaunchIntentForPackage(item.appId)
                 context!!.startActivity(intent)
             }
-        }
-    }
-
-    private inner class ItemViewSelectedListener : OnItemViewSelectedListener {
-        override fun onItemSelected(
-                itemViewHolder: Presenter.ViewHolder?,
-                item: Any?,
-                rowViewHolder: RowPresenter.ViewHolder?,
-                row: Row?) {
-
         }
     }
 

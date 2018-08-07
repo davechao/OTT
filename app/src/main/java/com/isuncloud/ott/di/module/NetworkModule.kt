@@ -1,9 +1,11 @@
 package com.isuncloud.ott.di.module
 
 import android.app.Application
+import com.google.firebase.firestore.FirebaseFirestore
 import com.isuncloud.isuntvmall.utils.SchedulerProvider
 import com.isuncloud.ott.BuildConfig
 import com.isuncloud.ott.repository.ApiRepository
+import com.isuncloud.ott.repository.FireStoreRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.Cache
@@ -50,6 +52,14 @@ class NetworkModule {
         }
         return httpLoggingInterceptor
     }
+
+    @Provides
+    @Singleton
+    fun providesFirebaseFirestore() = FirebaseFirestore.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideFireStoreRepository(firestore: FirebaseFirestore) = FireStoreRepository(firestore)
 
     @Provides
     @Singleton
