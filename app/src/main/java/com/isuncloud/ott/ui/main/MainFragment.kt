@@ -1,5 +1,8 @@
 package com.isuncloud.ott.ui.main
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.OnLifecycleEvent
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +17,7 @@ import com.isuncloud.ott.presenter.CardItemPresenter
 import com.isuncloud.ott.repository.model.AppItem
 import com.isuncloud.ott.ui.MainViewModel
 
-class MainFragment: VerticalGridSupportFragment() {
+class MainFragment: VerticalGridSupportFragment(), LifecycleObserver {
 
     companion object {
         private const val NUM_COLUMNS = 5
@@ -24,6 +27,7 @@ class MainFragment: VerticalGridSupportFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setupView()
+        setupObserver()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -37,19 +41,15 @@ class MainFragment: VerticalGridSupportFragment() {
         createECKey()
     }
 
-    override fun onResume() {
-        super.onResume()
-        if(viewModel.isClickApp) {
-            viewModel.exitApp()
-        }
-        viewModel.isClickApp = false
-    }
-
     private fun setupView() {
         val gridPresenter = VerticalGridPresenter()
         gridPresenter.numberOfColumns = MainFragment.NUM_COLUMNS
         setGridPresenter(gridPresenter)
         title = getString(R.string.main_name)
+    }
+
+    private fun setupObserver() {
+        lifecycle.addObserver(this)
     }
 
     private fun setupViewModel() {
@@ -79,6 +79,14 @@ class MainFragment: VerticalGridSupportFragment() {
         }
 
         adapter = cardRowAdapter
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    private fun backToLauncher() {
+        if(viewModel.isClickApp) {
+            viewModel.exitApp()
+        }
+        viewModel.isClickApp = false
     }
 
     private fun createECKey() {
