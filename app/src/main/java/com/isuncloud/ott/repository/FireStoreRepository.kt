@@ -12,8 +12,8 @@ import javax.inject.Singleton
 
 @Singleton
 class FireStoreRepository @Inject constructor(
-        val firestore: FirebaseFirestore,
-        val cryptoRepository: CryptoRepository) {
+        private val firestore: FirebaseFirestore,
+        private val cryptoRepository: CryptoRepository) {
 
     companion object {
         private const val COLLECTION_PATH_OTT = "OTT"

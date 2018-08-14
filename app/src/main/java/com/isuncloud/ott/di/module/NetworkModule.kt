@@ -50,4 +50,5 @@ class NetworkModule {
         return httpLoggingInterceptor
     }
 
+
 }

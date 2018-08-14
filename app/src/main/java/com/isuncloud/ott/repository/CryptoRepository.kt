@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CryptoRepository @Inject constructor(
-        val ecKeyDao: EcKeyDao) {
+        private val ecKeyDao: EcKeyDao) {
 
     fun createEcKeyPair() {
         val ecKeys = ecKeyDao.loadEcKeys()

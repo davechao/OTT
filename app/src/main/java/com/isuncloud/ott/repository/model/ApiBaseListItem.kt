@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 class ApiBaseListItem<T> : ApiBaseItem() {
 
-    @SerializedName("results")
+    @SerializedName("data")
     val itemList: ArrayList<T>? = arrayListOf()
         get() {
             return field ?: arrayListOf()
