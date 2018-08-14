@@ -33,23 +33,6 @@ android {
         }
     }
 
-//    signingConfigs {
-//        Properties props = new Properties()
-//        props.load(new FileInputStream(file('../secret/password.properties')))
-//        debug {
-//            storeFile file("../secret/debug.keystore")
-//            storePassword 'ott'
-//            keyAlias 'ott'
-//            keyPassword 'ott'
-//        }
-//        release {
-//            storeFile file("../secret/release.keystore")
-//            storePassword 'ott'
-//            keyAlias 'ott'
-//            keyPassword 'ott'
-//        }
-//    }
-
     flavorDimensions "mode"
 
     productFlavors {
@@ -68,19 +51,11 @@ android {
         debug {
             zipAlignEnabled true
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable true
-            // Disable fabric build ID generation for debug builds
-            ext.enableCrashlytics = false
-            versionNameSuffix "-debug"
-//            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-//            signingConfig signingConfigs.release
-            shrinkResources true
-            minifyEnabled true
-            useProguard true
-            zipAlignEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
