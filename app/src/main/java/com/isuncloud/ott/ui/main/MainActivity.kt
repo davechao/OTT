@@ -12,6 +12,10 @@ class MainActivity: FragmentActivity() {
         setupView()
     }
 
+    override fun onBackPressed() {
+
+    }
+
     private fun setupView() {
         supportFragmentManager
                 .beginTransaction()

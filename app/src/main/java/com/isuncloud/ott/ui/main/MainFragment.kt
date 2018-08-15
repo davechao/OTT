@@ -12,6 +12,7 @@ import android.support.v17.leanback.widget.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.isuncloud.ott.BuildConfig
 import com.isuncloud.ott.R
 import com.isuncloud.ott.presenter.CardItemPresenter
 import com.isuncloud.ott.repository.model.AppItem
@@ -71,11 +72,13 @@ class MainFragment: VerticalGridSupportFragment(), LifecycleObserver {
         val packageManager = activity!!.packageManager
         val apps = packageManager.queryIntentActivities(intent, 0)
         apps.forEach {
-            val appInfo = AppItem(
-                    it.activityInfo.packageName,
-                    it.loadLabel(packageManager).toString(),
-                    it.activityInfo.loadIcon(packageManager))
-            cardRowAdapter.add(appInfo)
+            if(it.activityInfo.packageName != BuildConfig.APPLICATION_ID) {
+                val appInfo = AppItem(
+                        it.activityInfo.packageName,
+                        it.loadLabel(packageManager).toString(),
+                        it.activityInfo.loadIcon(packageManager))
+                cardRowAdapter.add(appInfo)
+            }
         }
 
         adapter = cardRowAdapter
@@ -109,5 +112,4 @@ class MainFragment: VerticalGridSupportFragment(), LifecycleObserver {
             }
         }
     }
-
 }
