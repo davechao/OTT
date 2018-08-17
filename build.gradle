@@ -2,7 +2,7 @@
 
 buildscript {
     ext.google_support_library_version = "27.1.1"
-    ext.kotlin_version = '1.2.51'
+    ext.kotlin_version = '1.2.60'
 
     repositories {
         google()
@@ -25,8 +25,14 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenLocal()
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url "$rootDir/node_modules/react-native/android"
+        }
     }
 }
 

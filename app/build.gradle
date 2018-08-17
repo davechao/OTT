@@ -23,6 +23,10 @@ android {
         multiDexEnabled true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
     }
 
     kapt {
@@ -39,11 +43,17 @@ android {
         staging {
             dimension "mode"
             applicationId = "com.isuncloud.ott.staging"
+            buildConfigField 'String', 'ServerUrl', '"http://54.255.246.75:3001"'
+            buildConfigField 'String', 'NodeUrl', '"http://54.255.246.75:3000"'
+            buildConfigField 'String', 'Web3Url', '"http://13.229.118.246:8545"'
             versionNameSuffix "-staging"
         }
         production {
             dimension "mode"
             applicationId = "com.isuncloud.ott"
+            buildConfigField 'String', 'ServerUrl', '"http://54.255.246.75:3001"'
+            buildConfigField 'String', 'NodeUrl', '"http://54.255.246.75:3000"'
+            buildConfigField 'String', 'Web3Url', '"http://13.229.118.246:8545"'
         }
     }
 
@@ -90,6 +100,9 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    // React Native
+    implementation "com.facebook.react:react-native:0.55.4"
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
