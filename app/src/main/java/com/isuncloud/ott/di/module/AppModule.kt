@@ -2,14 +2,19 @@ package com.isuncloud.ott.di.module
 
 import android.app.Application
 import android.arch.persistence.room.Room
+import com.facebook.react.ReactInstanceManager
+import com.facebook.react.common.LifecycleState
+import com.facebook.react.shell.MainReactPackage
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.isuncloud.ott.BuildConfig
 import com.isuncloud.ott.app.EventPublishSubject
 import com.isuncloud.ott.app.Pref
 import com.isuncloud.ott.database.AppDatabase
 import com.isuncloud.ott.event.BaseRxEvent
+import com.isuncloud.ott.reactnative.module.WizardPackage
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -48,5 +53,18 @@ class AppModule {
     @Provides
     @Singleton
     fun providesFirebaseFirestore() = FirebaseFirestore.getInstance()
+
+    @Provides
+    @Singleton
+    fun providesReactNative(application: Application): ReactInstanceManager {
+        return ReactInstanceManager.builder()
+                .setApplication(application)
+                .setBundleAssetName("wizard_mobile.bundle")
+                .addPackage(MainReactPackage())
+                .addPackage(WizardPackage())
+                .setUseDeveloperSupport(BuildConfig.DEBUG)
+                .setInitialLifecycleState(LifecycleState.RESUMED)
+                .build()
+    }
 
 }

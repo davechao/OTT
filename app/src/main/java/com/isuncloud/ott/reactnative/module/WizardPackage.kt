@@ -1,4 +1,4 @@
-package com.isuncloud.pingpay.reactnative.module
+package com.isuncloud.ott.reactnative.module
 
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.NativeModule
@@ -7,7 +7,7 @@ import com.facebook.react.uimanager.ViewManager
 import java.util.ArrayList
 import java.util.Collections.emptyList
 
-class WizardPackage : ReactPackage {
+class WizardPackage: ReactPackage {
 
     override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
         val modules = ArrayList<NativeModule>()

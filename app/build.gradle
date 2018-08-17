@@ -37,6 +37,10 @@ android {
         }
     }
 
+    androidExtensions {
+        experimental = true
+    }
+
     flavorDimensions "mode"
 
     productFlavors {
