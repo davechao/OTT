@@ -40,6 +40,11 @@ class WizardModule(reactContext: ReactApplicationContext): ReactContextBaseJavaM
         eventResultHandler(rawData)
     }
 
+    @ReactMethod
+    fun receiveAsyncEvent(rawData: String) {
+        eventResultHandler(rawData)
+    }
+
     private fun sendEvent(eventName: String, model: BaseModel): Single<String> {
         val eventID = RandomIDGenerator.generated()
         val eventRequest = EventRequest()

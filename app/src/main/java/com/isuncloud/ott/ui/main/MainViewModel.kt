@@ -84,7 +84,7 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
                 serverUrl = BuildConfig.ServerUrl,
                 nodeUrl = BuildConfig.NodeUrl,
                 web3Url = BuildConfig.Web3Url,
-                privateKey = "",
+                privateKey = null,
                 storage = "level")
 
         compositeDisposable.add(
