@@ -79,7 +79,7 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
         }
     }
 
-    private fun doInitInfiniteChain() {
+    fun doInitInfiniteChain() {
         val env = EnvRequest(
                 serverUrl = BuildConfig.ServerUrl,
                 nodeUrl = BuildConfig.NodeUrl,

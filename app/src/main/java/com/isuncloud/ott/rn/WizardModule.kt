@@ -12,10 +12,10 @@ import io.reactivex.SingleEmitter
 import timber.log.Timber
 import javax.inject.Inject
 
-class WizardModule(reactContext: ReactApplicationContext): ReactContextBaseJavaModule(reactContext) {
+class WizardModule(private val reactContext: ReactApplicationContext): ReactContextBaseJavaModule(reactContext) {
 
     companion object {
-        private const val INIT_INFINITE_CHAIN = "initInfiniteChain"
+        private const val INIT_INFINITE_CHAIN = "initInfinitechain"
         private const val MAKE_LIGHT_TX = "makeLightTx"
     }
 
@@ -56,7 +56,7 @@ class WizardModule(reactContext: ReactApplicationContext): ReactContextBaseJavaM
 
         return Single.create<String> {
             eventMap[eventID] = Pair(eventName, it)
-            reactApplicationContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+            reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                     .emit(eventName, data)
         }
     }
