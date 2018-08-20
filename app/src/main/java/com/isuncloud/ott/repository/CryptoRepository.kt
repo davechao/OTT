@@ -25,8 +25,7 @@ class CryptoRepository @Inject constructor(
                 publicKey = "")
         ecKeyDao.insertEcKey(ecKey)
     }
-
-
+    
 //    fun createEcKeyPair() {
 //        val ecKeys = ecKeyDao.loadEcKeys()
 //
