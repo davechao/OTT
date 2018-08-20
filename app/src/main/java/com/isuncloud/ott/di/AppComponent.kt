@@ -5,8 +5,8 @@ import com.isuncloud.ott.OTTApp
 import com.isuncloud.ott.di.module.AppModule
 import com.isuncloud.ott.di.module.NetworkModule
 import com.isuncloud.ott.di.module.RepositoryModule
-import com.isuncloud.ott.rn.module.WizardModule
-import com.isuncloud.ott.ui.MainViewModel
+import com.isuncloud.ott.rn.WizardModule
+import com.isuncloud.ott.ui.main.MainViewModel
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule

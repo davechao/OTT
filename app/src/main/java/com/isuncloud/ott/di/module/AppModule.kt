@@ -14,7 +14,7 @@ import com.isuncloud.ott.app.EventPublishSubject
 import com.isuncloud.ott.app.Pref
 import com.isuncloud.ott.database.AppDatabase
 import com.isuncloud.ott.event.BaseRxEvent
-import com.isuncloud.ott.rn.module.WizardPackage
+import com.isuncloud.ott.rn.WizardPackage
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

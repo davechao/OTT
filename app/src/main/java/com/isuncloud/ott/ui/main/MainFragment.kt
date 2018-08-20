@@ -16,7 +16,6 @@ import com.isuncloud.ott.BuildConfig
 import com.isuncloud.ott.R
 import com.isuncloud.ott.presenter.CardItemPresenter
 import com.isuncloud.ott.repository.model.AppItem
-import com.isuncloud.ott.ui.MainViewModel
 
 class MainFragment: VerticalGridSupportFragment(), LifecycleObserver {
 

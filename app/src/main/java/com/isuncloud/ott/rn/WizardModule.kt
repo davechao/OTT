@@ -19,8 +19,7 @@ class WizardModule(reactContext: ReactApplicationContext): ReactContextBaseJavaM
         private const val MAKE_LIGHT_TX = "makeLightTx"
     }
 
-    @Inject
-    lateinit var gson: Gson
+    @Inject lateinit var gson: Gson
 
     private var eventMap: HashMap<String, Pair<String, SingleEmitter<String>>> = hashMapOf()
 
