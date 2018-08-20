@@ -10,4 +10,4 @@ data class InitResult(
         @SerializedName("address")
         val address: String = ""
 
-):BaseModel()
+): BaseModel()

@@ -18,4 +18,4 @@ data class EventResult(
         @SerializedName("result")
         var result: @RawValue JsonObject = JsonObject()
 
-) : Parcelable
+): Parcelable

@@ -1,8 +1,6 @@
 package com.isuncloud.ott.ui.main
 
-import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.OnLifecycleEvent
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -37,8 +35,7 @@ class MainFragment: VerticalGridSupportFragment(), LifecycleObserver {
         setupListener()
         setupData()
 
-        // TODO: if it has network connected, then createECKey
-        createECKey()
+//        createECKey()
     }
 
     private fun setupView() {
@@ -83,17 +80,17 @@ class MainFragment: VerticalGridSupportFragment(), LifecycleObserver {
         adapter = cardRowAdapter
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    private fun backToLauncher() {
-        if(viewModel.isClickApp) {
-            viewModel.exitApp()
-        }
-        viewModel.isClickApp = false
-    }
+//    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+//    private fun backToLauncher() {
+//        if(viewModel.isClickApp) {
+//            viewModel.exitApp()
+//        }
+//        viewModel.isClickApp = false
+//    }
 
-    private fun createECKey() {
-        viewModel.createEcKeyPair()
-    }
+//    private fun createECKey() {
+//        viewModel.createEcKeyPair()
+//    }
 
     private inner class ItemViewClickedListener: OnItemViewClickedListener {
         override fun onItemClicked(
@@ -102,8 +99,8 @@ class MainFragment: VerticalGridSupportFragment(), LifecycleObserver {
                 rowViewHolder: RowPresenter.ViewHolder?,
                 row: Row?) {
             if(item is AppItem) {
-                viewModel.enterApp(item)
-                viewModel.isClickApp = true
+//                viewModel.enterApp(item)
+//                viewModel.isClickApp = true
 
                 val intent = activity!!.packageManager
                         .getLaunchIntentForPackage(item.appId)
