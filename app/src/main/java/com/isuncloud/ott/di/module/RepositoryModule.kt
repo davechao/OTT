@@ -4,9 +4,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.isuncloud.ott.database.AppDatabase
 import com.isuncloud.ott.repository.ApiService
+import com.isuncloud.ott.repository.AppRepository
 import com.isuncloud.ott.repository.CryptoRepository
 import com.isuncloud.ott.repository.FireStoreRepository
 import com.isuncloud.ott.repository.db.dao.EcKeyDao
+import com.isuncloud.ott.repository.db.dao.WalletDao
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -30,12 +32,22 @@ class RepositoryModule {
 
     @Provides
     @Singleton
+    fun provideWalletDao(appDatabase: AppDatabase): WalletDao {
+        return appDatabase.walletDao()
+    }
+
+    @Provides
+    @Singleton
     fun providesCryptoRepository(ecKeyDao: EcKeyDao) = CryptoRepository(ecKeyDao)
 
     @Provides
     @Singleton
     fun provideFireStoreRepository(firestore: FirebaseFirestore, cryptoRepository: CryptoRepository)
             = FireStoreRepository(firestore, cryptoRepository)
+
+    @Provides
+    @Singleton
+    fun providesAppRepository(ecKeyDao: EcKeyDao, walletDao: WalletDao) = AppRepository(ecKeyDao, walletDao)
 
     @Provides
     @Singleton

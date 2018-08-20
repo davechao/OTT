@@ -7,6 +7,7 @@ import com.isuncloud.ott.repository.model.SignItem
 import com.isuncloud.ott.utils.EcKeyUtils
 import org.web3j.crypto.ECKeyPair
 import org.web3j.crypto.Hash
+import org.web3j.crypto.Keys
 import org.web3j.crypto.Sign
 import org.web3j.utils.Numeric
 import timber.log.Timber
@@ -17,36 +18,27 @@ import javax.inject.Singleton
 class CryptoRepository @Inject constructor(
         private val ecKeyDao: EcKeyDao) {
 
-    fun isExistEcKeyPair() = ecKeyDao.loadEcKeys().isEmpty()
+    fun createEcKeyPair() {
+        val ecKeys = ecKeyDao.loadEcKeys()
 
-    fun saveEcKeyPair(privateKey: String) {
-        val ecKey = EcKey(
-                privateKey = privateKey,
-                publicKey = "")
-        ecKeyDao.insertEcKey(ecKey)
+        if(ecKeys.isEmpty()) {
+            val ecKeyPair = Keys.createEcKeyPair()
+            val privateKey = ecKeyPair.privateKey
+            val publicKey= ecKeyPair.publicKey
+            val ecKey = EcKey(
+                    privateKey = privateKey.toString(),
+                    publicKey = publicKey.toString())
+
+            val privateKeyBytes = EcKeyUtils.getPrivateKeyToBates(privateKey)
+            val publicKeyBytes = EcKeyUtils.getPublicKeyToBates(publicKey)
+            val privateKeyStr = EcKeyUtils.getPrivateKeyToString(privateKeyBytes)
+            val publicKeyStr = EcKeyUtils.getPublicKeyToString(publicKeyBytes)
+            Timber.d("privateKey: " + privateKeyStr)
+            Timber.d("publicKey: " + publicKeyStr)
+
+            ecKeyDao.insertEcKey(ecKey)
+        }
     }
-    
-//    fun createEcKeyPair() {
-//        val ecKeys = ecKeyDao.loadEcKeys()
-//
-//        if(ecKeys.isEmpty()) {
-//            val ecKeyPair = Keys.createEcKeyPair()
-//            val privateKey = ecKeyPair.privateKey
-//            val publicKey= ecKeyPair.publicKey
-//            val ecKey = EcKey(
-//                    privateKey = privateKey.toString(),
-//                    publicKey = publicKey.toString())
-//
-//            val privateKeyBytes = EcKeyUtils.getPrivateKeyToBates(privateKey)
-//            val publicKeyBytes = EcKeyUtils.getPublicKeyToBates(publicKey)
-//            val privateKeyStr = EcKeyUtils.getPrivateKeyToString(privateKeyBytes)
-//            val publicKeyStr = EcKeyUtils.getPublicKeyToString(publicKeyBytes)
-//            Timber.d("privateKey: " + privateKeyStr)
-//            Timber.d("publicKey: " + publicKeyStr)
-//
-//            ecKeyDao.insertEcKey(ecKey)
-//        }
-//    }
 
     fun signData(data: ByteArray, ecKeyPair: ECKeyPair): SignItem {
         val hashData = Hash.sha3(data)

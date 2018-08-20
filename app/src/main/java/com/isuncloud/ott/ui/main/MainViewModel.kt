@@ -9,9 +9,10 @@ import com.isuncloud.ott.ui.base.BaseAndroidViewModel
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 import com.isuncloud.ott.OTTApp
-import com.isuncloud.ott.repository.CryptoRepository
+import com.isuncloud.ott.repository.AppRepository
 import com.isuncloud.ott.repository.model.rn.EnvRequest
 import com.isuncloud.ott.repository.model.rn.InitResult
+import com.isuncloud.ott.repository.model.rn.MakeLightTx
 import com.isuncloud.ott.rn.WizardModule
 import com.isuncloud.ott.utils.SchedulerProvider
 import io.reactivex.rxkotlin.subscribeBy
@@ -38,8 +39,9 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 //    @Inject lateinit var firestore: FirebaseFirestore
 //    @Inject lateinit var fireStoreRepository: FireStoreRepository
 //    @Inject lateinit var apiRepository: ApiRepository
+//    @Inject lateinit var cryptoRepository: CryptoRepository
 
-    @Inject lateinit var cryptoRepository: CryptoRepository
+    @Inject lateinit var appRepository: AppRepository
 
     @Inject lateinit var gson: Gson
 
@@ -75,7 +77,7 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
         reactInstanceManager.addReactInstanceEventListener {
             wizardModule = it.getNativeModule(WizardModule::class.java)
             OTTApp.getAppComponent().inject(wizardModule)
-            if(!cryptoRepository.isExistEcKeyPair()) {
+            if(!appRepository.isExistEcKeyPair()) {
                 doInitInfiniteChain()
             }
         }
@@ -94,12 +96,29 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
                         .compose(schedulerProvider.getSchedulersForSingle())
                         .subscribeBy(
                                 onSuccess = {
+                                    Timber.d(it)
                                     val initResult = gson.fromJson(it, InitResult::class.java)
-                                    Timber.d(initResult.toString())
-
-                                    val address = initResult.address
                                     val privateKey = initResult.privateKey
-                                    cryptoRepository.saveEcKeyPair(privateKey)
+                                    val address = initResult.address
+                                    appRepository.saveEcKeyPair(privateKey)
+                                    appRepository.saveWallet(address)
+                                },
+                                onError = {
+                                    Timber.d(it.toString())
+                                }
+                        )
+        )
+    }
+
+    private fun makeLightTx() {
+        val lightTx = MakeLightTx()
+
+        compositeDisposable.add(
+                wizardModule.makeLightTx(lightTx)
+                        .compose(schedulerProvider.getSchedulersForSingle())
+                        .subscribeBy(
+                                onSuccess = {
+                                    Timber.d(it)
                                 },
                                 onError = {
                                     Timber.d(it.toString())
