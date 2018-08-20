@@ -1,4 +1,4 @@
-package com.isuncloud.ott.reactnative.module
+package com.isuncloud.ott.rn
 
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.NativeModule
