@@ -10,7 +10,6 @@ class AppRepository @Inject constructor(
         private val ecKeyDao: EcKeyDao,
         private val walletDao: WalletDao) {
 
-    fun isExistEcKeyPair() = ecKeyDao.loadEcKeys().isEmpty()
 
     fun saveEcKeyPair(privateKey: String) {
         val ecKey = EcKey(
@@ -19,9 +18,19 @@ class AppRepository @Inject constructor(
         ecKeyDao.insertEcKey(ecKey)
     }
 
+    fun getPrivateKey(): String? {
+        var privateKey = ""
+        val ecKeys = ecKeyDao.loadEcKeys()
+        if(!ecKeys.isEmpty()) {
+            privateKey = ecKeys[0].privateKey
+        }
+        return privateKey
+    }
+
     fun saveWallet(address: String) {
         val wallet = Wallet(address = address)
         walletDao.insertWallet(wallet)
     }
-    
+
+
 }

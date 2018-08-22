@@ -99,12 +99,16 @@ class MainFragment: VerticalGridSupportFragment(), LifecycleObserver {
                 rowViewHolder: RowPresenter.ViewHolder?,
                 row: Row?) {
             if(item is AppItem) {
+
 //                viewModel.enterApp(item)
 //                viewModel.isClickApp = true
 
-                val intent = activity!!.packageManager
-                        .getLaunchIntentForPackage(item.appId)
-                context!!.startActivity(intent)
+//                val intent = activity!!.packageManager
+//                        .getLaunchIntentForPackage(item.appId)
+//                context!!.startActivity(intent)
+
+                viewModel.makeLightTx()
+
             }
         }
     }

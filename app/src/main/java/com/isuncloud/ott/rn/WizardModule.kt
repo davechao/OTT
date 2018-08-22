@@ -36,13 +36,13 @@ class WizardModule(private val reactContext: ReactApplicationContext): ReactCont
     }
 
     @ReactMethod
-    fun receiveEvent(rawData: String) {
-        eventResultHandler(rawData)
+    fun receiveEvent(receiveData: String) {
+        eventResultHandler(receiveData)
     }
 
     @ReactMethod
-    fun receiveAsyncEvent(rawData: String) {
-        eventResultHandler(rawData)
+    fun receiveAsyncEvent(receiveData: String) {
+//        eventResultHandler(receiveData)
     }
 
     private fun sendEvent(eventName: String, model: BaseModel): Single<String> {
@@ -51,20 +51,20 @@ class WizardModule(private val reactContext: ReactApplicationContext): ReactCont
         eventRequest.eventID = eventID
         eventRequest.request = model
 
-        val data = objectToString(eventRequest)
-        Timber.d("data: " + data)
+        val sendData = objectToString(eventRequest)
+        Timber.d("send data: " + sendData)
 
         return Single.create<String> {
             eventMap[eventID] = Pair(eventName, it)
             reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                    .emit(eventName, data)
+                    .emit(eventName, sendData)
         }
     }
 
-    private fun eventResultHandler(rawData: String) {
-        Timber.d("rawData: " + rawData)
+    private fun eventResultHandler(receiveData: String) {
+        Timber.d("receive data: " + receiveData)
 
-        val eventResult = gson.fromJson(rawData, EventResult::class.java)
+        val eventResult = gson.fromJson(receiveData, EventResult::class.java)
         val eventID = eventResult.eventID
         if (eventResult.success) {
             eventMap[eventID]!!.second.onSuccess(objectToString(eventResult.result))
