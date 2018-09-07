@@ -6,7 +6,8 @@ import android.databinding.Observable
 import android.databinding.PropertyChangeRegistry
 import io.reactivex.disposables.CompositeDisposable
 
-open class BaseAndroidViewModel(app: Application): AndroidViewModel(app), Observable {
+open class BaseAndroidViewModel(app: Application)
+    : AndroidViewModel(app), Observable {
 
     @Transient
     private var mCallbacks: PropertyChangeRegistry? = null

@@ -1,4 +1,4 @@
-package com.isuncloud.isuntvmall.app
+package com.isuncloud.ott.app
 
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable

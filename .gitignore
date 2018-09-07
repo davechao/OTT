@@ -8,3 +8,4 @@
 /build
 /captures
 .externalNativeBuild
+/node_modules

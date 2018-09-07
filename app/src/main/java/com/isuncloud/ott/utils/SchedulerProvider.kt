@@ -1,4 +1,4 @@
-package com.isuncloud.isuntvmall.utils
+package com.isuncloud.ott.utils
 
 import io.reactivex.*
 

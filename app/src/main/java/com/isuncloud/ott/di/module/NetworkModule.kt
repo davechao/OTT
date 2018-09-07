@@ -1,8 +1,8 @@
 package com.isuncloud.ott.di.module
 
 import android.app.Application
-import com.isuncloud.isuntvmall.utils.SchedulerProvider
 import com.isuncloud.ott.BuildConfig
+import com.isuncloud.ott.utils.SchedulerProvider
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.Cache
@@ -49,5 +49,6 @@ class NetworkModule {
         }
         return httpLoggingInterceptor
     }
+
 
 }
