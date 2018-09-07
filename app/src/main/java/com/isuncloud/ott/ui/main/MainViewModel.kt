@@ -34,8 +34,8 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
     private lateinit var appData: AppData
     private lateinit var ratings: Ratings
 
-    lateinit var deviceId: String
-    var uuid: String = ""
+    var deviceId = ""
+    var uuid = ""
     var isClickApp = false
     var isInitRn = false
     var lightTxJson = MutableLiveData<String>()

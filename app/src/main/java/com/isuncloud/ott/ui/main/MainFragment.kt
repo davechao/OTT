@@ -68,7 +68,7 @@ class MainFragment: VerticalGridSupportFragment() {
     }
 
     private fun setupData() {
-        var cardRowAdapter = ArrayObjectAdapter(CardItemPresenter())
+        val cardRowAdapter = ArrayObjectAdapter(CardItemPresenter())
 
         viewModel.deviceId = Secure.getString(activity?.contentResolver, Secure.ANDROID_ID)
 
