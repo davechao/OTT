@@ -1,4 +1,4 @@
-package com.isuncloud.ott.repository.model.firestore
+package com.isuncloud.ott.repository.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

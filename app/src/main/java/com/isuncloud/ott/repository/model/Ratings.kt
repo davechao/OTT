@@ -1,4 +1,4 @@
-package com.isuncloud.ott.repository.model.firestore
+package com.isuncloud.ott.repository.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
@@ -8,10 +8,10 @@ import kotlinx.android.parcel.Parcelize
 data class Ratings(
 
         @SerializedName("appSTime")
-        var appSTime: String = "",
+        var appSTime: Long = 0,
 
         @SerializedName("appETime")
-        var appETime: String = "",
+        var appETime: Long = 0,
 
         @SerializedName("appRunduration")
         var appRunduration: Long = 0

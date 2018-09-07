@@ -1,4 +1,4 @@
-package com.isuncloud.ott.database.typeconverter
+package com.isuncloud.ott.repository.db.typeconverter
 
 import android.arch.persistence.room.TypeConverter
 import org.threeten.bp.Instant

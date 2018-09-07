@@ -52,7 +52,7 @@ class WizardModule(private val reactContext: ReactApplicationContext): ReactCont
         eventRequest.request = model
 
         val sendData = objectToString(eventRequest)
-        Timber.d("send data: " + sendData)
+        Timber.d("send data:: $sendData")
 
         return Single.create<String> {
             eventMap[eventID] = Pair(eventName, it)
@@ -62,7 +62,7 @@ class WizardModule(private val reactContext: ReactApplicationContext): ReactCont
     }
 
     private fun eventResultHandler(receiveData: String) {
-        Timber.d("receive data: " + receiveData)
+        Timber.d("receive data: $receiveData")
 
         val eventResult = gson.fromJson(receiveData, EventResult::class.java)
         val eventID = eventResult.eventID

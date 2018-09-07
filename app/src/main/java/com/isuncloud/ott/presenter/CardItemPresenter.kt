@@ -7,7 +7,7 @@ import android.text.TextUtils
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.isuncloud.ott.R
-import com.isuncloud.ott.repository.model.AppItem
+import com.isuncloud.ott.repository.model.LauncherAppItem
 import kotlin.properties.Delegates
 
 class CardItemPresenter: Presenter() {
@@ -41,7 +41,7 @@ class CardItemPresenter: Presenter() {
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
-      if(item is AppItem) {
+      if(item is LauncherAppItem) {
             val imageCardView = viewHolder.view as ImageCardView
             if(!TextUtils.isEmpty(item.appId)) {
                 imageCardView.titleText = item.appName
