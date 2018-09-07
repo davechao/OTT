@@ -23,6 +23,8 @@ class MainFragment: VerticalGridSupportFragment() {
 
     companion object {
         private const val NUM_COLUMNS = 5
+        private const val LAUNCHER_STATUS_PERIOD = 60000
+        private const val LAUNCHER_APP_UPDATE_PERIOD = 120000
     }
 
     private lateinit var viewModel: MainViewModel
@@ -105,7 +107,7 @@ class MainFragment: VerticalGridSupportFragment() {
             }
         }
         launcherStatusTimer = Timer()
-        launcherStatusTimer.schedule(launcherStatusTimerTask, 0, 60000)
+        launcherStatusTimer.schedule(launcherStatusTimerTask, 0, LAUNCHER_STATUS_PERIOD.toLong())
 
         val launcherAppUpdateTimerTask = object: TimerTask() {
             override fun run() {
@@ -115,7 +117,7 @@ class MainFragment: VerticalGridSupportFragment() {
             }
         }
         launcherAppUpdateTimer = Timer()
-        launcherAppUpdateTimer.schedule(launcherAppUpdateTimerTask, 0, 120000)
+        launcherAppUpdateTimer.schedule(launcherAppUpdateTimerTask, 0, LAUNCHER_APP_UPDATE_PERIOD.toLong())
     }
 
     private fun stopJobs() {
