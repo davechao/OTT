@@ -92,7 +92,7 @@ class MainFragment: VerticalGridSupportFragment() {
 
     private fun observeData() {
         viewModel.lightTxJson.observe(this, Observer {
-            viewModel.updateAppExecRecord(it.toString())
+            viewModel.updateAppExecRecord(it!!)
         })
     }
 

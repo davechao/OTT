@@ -9,4 +9,5 @@ data class AppExecReturnFieldItem(
 
         @SerializedName("uuid")
         val uuid: String = ""
+
 )

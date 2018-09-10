@@ -21,18 +21,18 @@ class ApiRepository @Inject constructor(private val apiService: ApiService) {
     private val appExecReturnFieldItem = "{ok uuid}"
 
     fun addDevice(body: AddDeviceItem)
-            : Single<ReturnFieldItem> = apiService.addDevice(MUTATION, ADD_DEVICE, body, returnField)
+            : Single<ApiItem<ReturnFieldItem>> = apiService.addDevice(MUTATION, ADD_DEVICE, body, returnField)
 
     fun updateDevice(body: UpdateDeviceItem)
-            : Single<ReturnFieldItem> = apiService.updateDevice(MUTATION, UPDATE_DEVICE, body, returnField)
+            : Single<ApiItem<ReturnFieldItem>> = apiService.updateDevice(MUTATION, UPDATE_DEVICE, body, returnField)
 
     fun insertManyApps(body: InsertManyAppItem)
-            : Single<ReturnFieldItem> = apiService.insertManyApp(MUTATION, INSERT_MANY_APPS, body, returnField)
+            : Single<ApiItem<ReturnFieldItem>> = apiService.insertManyApp(MUTATION, INSERT_MANY_APPS, body, returnField)
 
     fun insertAppExecRecord(body: InsertAppExecRecordItem)
-            : Single<AppExecReturnFieldItem> = apiService.insertAppExecRecord(MUTATION, INSERT_APP_EXEC_RECORD, body, appExecReturnFieldItem)
+            : Single<ApiItem<AppExecReturnFieldItem>> = apiService.insertAppExecRecord(MUTATION, INSERT_APP_EXEC_RECORD, body, appExecReturnFieldItem)
 
     fun updateAppExecRecord(body: UpdateAppExecRecordItem)
-            : Single<ReturnFieldItem> = apiService.updateAppExecRecord(MUTATION, UPDATE_APP_EXEC_RECORD, body, returnField)
+            : Single<ApiItem<ReturnFieldItem>> = apiService.updateAppExecRecord(MUTATION, UPDATE_APP_EXEC_RECORD, body, returnField)
 
 }
