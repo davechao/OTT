@@ -10,8 +10,8 @@ data class InsertAppExecRecordItem(
         @SerializedName("ethAddress")
         val ethAddress: String = "",
 
-        @SerializedName("appid")
-        val appid: String = "",
+        @SerializedName("appId")
+        val appId: String = "",
 
         @SerializedName("appName")
         val appName: String = "",

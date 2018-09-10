@@ -34,11 +34,12 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
     private lateinit var appData: AppData
     private lateinit var ratings: Ratings
 
+    private var uuid = ""
     var deviceId = ""
-    var uuid = ""
     var isClickApp = false
     var isInitRn = false
     var lightTxJson = MutableLiveData<String>()
+
 
     @Inject lateinit var reactInstanceManager: ReactInstanceManager
     @Inject lateinit var schedulerProvider: SchedulerProvider
@@ -154,7 +155,7 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
                         .compose(schedulerProvider.getSchedulersForSingle())
                         .subscribeBy(
                                 onSuccess = {
-                                    Timber.d("@@result: $it")
+                                    Timber.d("result: $it")
                                     uuid = it.uuid
                                 },
                                 onError = {

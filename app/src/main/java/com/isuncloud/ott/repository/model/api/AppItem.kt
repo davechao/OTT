@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class AppItem(
 
-        @SerializedName("appid")
-        val appid: String = "",
+        @SerializedName("appId")
+        val appId: String = "",
 
         @SerializedName("appName")
         val appName: String = ""
