@@ -44,22 +44,20 @@ class MainFragment: VerticalGridSupportFragment() {
         onItemViewClickedListener = ItemViewClickedListener()
         setupData()
         observeData()
+        startJobs()
     }
 
     override fun onResume() {
-        startJobs()
-
         if(viewModel.isClickApp) {
             viewModel.makeLightTx()
         }
         viewModel.isClickApp = false
-
         super.onResume()
     }
 
-    override fun onPause() {
+    override fun onDestroy() {
         stopJobs()
-        super.onPause()
+        super.onDestroy()
     }
 
     private fun setupView() {
