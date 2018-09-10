@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.text.TextUtils
 import com.facebook.react.ReactInstanceManager
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.isuncloud.ott.BuildConfig
 import com.isuncloud.ott.ui.base.BaseAndroidViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -156,7 +157,7 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
                         .subscribeBy(
                                 onSuccess = {
                                     Timber.d("result: $it")
-                                    uuid = it.uuid
+                                    uuid = it.data.uuid
                                 },
                                 onError = {
                                     Timber.d(it.toString())

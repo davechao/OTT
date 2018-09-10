@@ -25,7 +25,8 @@ class AppRepository @Inject constructor(
     }
 
     fun saveWallet(address: String) {
-        val wallet = Wallet(address = address)
+        val sb = StringBuilder().append("0x").append(address)
+        val wallet = Wallet(address = sb.toString())
         walletDao.insertWallet(wallet)
     }
 

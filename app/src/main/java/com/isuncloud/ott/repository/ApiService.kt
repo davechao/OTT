@@ -15,7 +15,7 @@ interface ApiService {
             @Path("action") action: String,
             @Body body: AddDeviceItem,
             @Query("r_fields") rFields: String
-    ): Single<ReturnFieldItem>
+    ): Single<ApiItem<ReturnFieldItem>>
 
     @POST("/graphql_gateway/{type}/{action}")
     fun updateDevice(
@@ -23,7 +23,7 @@ interface ApiService {
             @Path("action") action: String,
             @Body body: UpdateDeviceItem,
             @Query("r_fields") rFields: String
-    ): Single<ReturnFieldItem>
+    ): Single<ApiItem<ReturnFieldItem>>
 
     @POST("/graphql_gateway/{type}/{action}")
     fun insertManyApp(
@@ -31,7 +31,7 @@ interface ApiService {
             @Path("action") action: String,
             @Body body: InsertManyAppItem,
             @Query("r_fields") rFields: String
-    ): Single<ReturnFieldItem>
+    ): Single<ApiItem<ReturnFieldItem>>
 
     @POST("/graphql_gateway/{type}/{action}")
     fun insertAppExecRecord(
@@ -39,7 +39,7 @@ interface ApiService {
             @Path("action") action: String,
             @Body body: InsertAppExecRecordItem,
             @Query("r_fields") rFields: String
-    ): Single<AppExecReturnFieldItem>
+    ): Single<ApiItem<AppExecReturnFieldItem>>
 
     @POST("/graphql_gateway/{type}/{action}")
     fun updateAppExecRecord(
@@ -47,6 +47,6 @@ interface ApiService {
             @Path("action") action: String,
             @Body body: UpdateAppExecRecordItem,
             @Query("r_fields") rFields: String
-    ): Single<ReturnFieldItem>
+    ): Single<ApiItem<ReturnFieldItem>>
 
 }
