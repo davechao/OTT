@@ -1,8 +1,6 @@
 package com.isuncloud.ott.repository.model.api
 
-import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
-import com.isuncloud.ott.utils.RawJsonGsonAdapter
 
 data class UpdateAppExecRecordItem(
 
@@ -18,8 +16,6 @@ data class UpdateAppExecRecordItem(
         @SerializedName("endTime")
         val endTime: Long = 0,
 
-        @JsonAdapter(RawJsonGsonAdapter::class)
         @SerializedName("lightTxJSON")
         val lightTxJson: String = ""
-
 )
