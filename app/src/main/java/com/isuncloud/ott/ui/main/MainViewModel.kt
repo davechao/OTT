@@ -5,7 +5,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.text.TextUtils
 import com.facebook.react.ReactInstanceManager
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import com.isuncloud.ott.BuildConfig
 import com.isuncloud.ott.ui.base.BaseAndroidViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -40,7 +39,6 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
     var isClickApp = false
     var isInitRn = false
     var lightTxJson = MutableLiveData<String>()
-
 
     @Inject lateinit var reactInstanceManager: ReactInstanceManager
     @Inject lateinit var schedulerProvider: SchedulerProvider
@@ -164,6 +162,35 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
                                 }))
     }
 
+    fun makeLightTx() {
+        val endTime = LocalDateTimeConverter().dateToTimestamp(LocalDateTime.now())
+        ratings.appETime = endTime
+        ratings.appRunduration = endTime - ratings.appSTime
+        appData.ratings = ratings
+
+        val client = Client(appData, deviceId)
+        val server = Server()
+
+        val metaDataModel = MetaDataModel(client, server)
+
+        val lightTx = MakeLightTx(
+                fromAddress = wallet.address,
+                toAddress = wallet.address,
+                metadata = metaDataModel)
+
+        compositeDisposable.add(
+                wizardModule.makeLightTx(lightTx)
+                        .compose(schedulerProvider.getSchedulersForSingle())
+                        .subscribeBy(
+                                onSuccess = {
+                                    Timber.d("makeLightTx: $it")
+                                    lightTxJson.value = it
+                                },
+                                onError = {
+                                    Timber.d(it.toString())
+                                }))
+    }
+
     fun updateAppExecRecord(lightTxJson: String) {
         val endTime = LocalDateTimeConverter().dateToTimestamp(LocalDateTime.now())
 
@@ -178,31 +205,6 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
                         .subscribeBy(
                                 onSuccess = {
                                     Timber.d("result: $it")
-                                },
-                                onError = {
-                                    Timber.d(it.toString())
-                                }))
-    }
-
-    fun makeLightTx() {
-        val endTime = LocalDateTimeConverter().dateToTimestamp(LocalDateTime.now())
-        ratings.appETime = endTime
-        ratings.appRunduration = endTime - ratings.appSTime
-        appData.ratings = ratings
-        val client = Client(appData, deviceId)
-        val metaDataModel = MetaDataModel(client)
-        val lightTx = MakeLightTx(
-                fromAddress = wallet.address,
-                toAddress = wallet.address,
-                metadata = metaDataModel)
-
-        compositeDisposable.add(
-                wizardModule.makeLightTx(lightTx)
-                        .compose(schedulerProvider.getSchedulersForSingle())
-                        .subscribeBy(
-                                onSuccess = {
-                                    Timber.d("makeLightTx: $it")
-                                    lightTxJson.value = it
                                 },
                                 onError = {
                                     Timber.d(it.toString())

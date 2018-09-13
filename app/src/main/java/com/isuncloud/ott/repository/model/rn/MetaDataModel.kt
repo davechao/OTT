@@ -8,6 +8,9 @@ import kotlinx.android.parcel.Parcelize
 data class MetaDataModel(
 
         @SerializedName("client")
-        var client: Client = Client()
+        var client: Client = Client(),
+
+        @SerializedName("server")
+        var server: Server = Server()
 
 ): Parcelable
