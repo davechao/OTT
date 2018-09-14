@@ -1,19 +1,21 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext.android_plugin_version='3.1.4'
     ext.google_support_library_version = "27.1.1"
     ext.kotlin_version = '1.2.60'
+    ext.google_service_version = '4.0.1'
 
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath "com.android.tools.build:gradle:$android_plugin_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // Google Services
-        classpath 'com.google.gms:google-services:4.0.1'
+        classpath "com.google.gms:google-services:$google_service_version"
 
         // AutoParcelable
         classpath "io.mironov.smuggler:smuggler-plugin:0.13.1"
