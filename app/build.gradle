@@ -124,7 +124,7 @@ dependencies {
     implementation "com.android.support:leanback-v17:$google_support_library_version"
 
     // Constraint Layout
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
     // Lifecycle
     // ViewModel and LiveData
@@ -164,9 +164,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-core:16.0.1'
-    implementation 'com.google.firebase:firebase-analytics:16.0.1'
-    implementation 'com.google.firebase:firebase-firestore:17.0.4'
+    implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.google.firebase:firebase-analytics:16.0.3'
+    implementation 'com.google.firebase:firebase-firestore:17.1.0'
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.7.1'
@@ -184,6 +184,7 @@ dependencies {
     // Test
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     // Stetho (for debug)

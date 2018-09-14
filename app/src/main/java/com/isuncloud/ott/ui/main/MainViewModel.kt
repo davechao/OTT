@@ -192,6 +192,11 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
     }
 
     fun updateAppExecRecord(lightTxJson: String) {
+
+        if(TextUtils.isEmpty(uuid)) {
+            return
+        }
+
         val endTime = LocalDateTimeConverter().dateToTimestamp(LocalDateTime.now())
 
         ratings.appETime = endTime
