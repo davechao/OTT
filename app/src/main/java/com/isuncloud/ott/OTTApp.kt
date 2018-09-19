@@ -9,7 +9,6 @@ import android.arch.lifecycle.ProcessLifecycleOwner
 import android.content.Context
 import android.support.multidex.MultiDex
 import com.facebook.react.ReactInstanceManager
-import com.facebook.react.ReactRootView
 import com.facebook.stetho.Stetho
 import com.isuncloud.ott.di.AppComponent
 import com.isuncloud.ott.di.DaggerAppComponent
@@ -66,13 +65,6 @@ class OTTApp: Application(), HasActivityInjector, LifecycleObserver {
         ottApp = this
 
         appComponent.inject(this)
-
-        startReactNative()
-    }
-
-    private fun startReactNative() {
-        val reactRootView = ReactRootView(this)
-        reactRootView.startReactApplication(reactInstanceManager, "WizardMobile", null)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)

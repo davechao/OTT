@@ -11,6 +11,7 @@ import android.support.v17.leanback.widget.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.facebook.react.ReactRootView
 import com.isuncloud.ott.BuildConfig
 import com.isuncloud.ott.R
 import com.isuncloud.ott.presenter.CardItemPresenter
@@ -42,6 +43,7 @@ class MainFragment: VerticalGridSupportFragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         onItemViewClickedListener = ItemViewClickedListener()
+        setupRN()
         setupData()
         observeData()
         startJobs()
@@ -49,6 +51,7 @@ class MainFragment: VerticalGridSupportFragment() {
 
     override fun onResume() {
         if(viewModel.isClickApp) {
+            viewModel.stopHyPacketCapture()
             viewModel.makeLightTx()
         }
         viewModel.isClickApp = false
@@ -65,6 +68,12 @@ class MainFragment: VerticalGridSupportFragment() {
         gridPresenter.numberOfColumns = MainFragment.NUM_COLUMNS
         setGridPresenter(gridPresenter)
         title = getString(R.string.main_name)
+    }
+
+    private fun setupRN() {
+        viewModel.setupReactInstanceManagerListener()
+        ReactRootView(context).startReactApplication(
+                viewModel.reactInstanceManager, "WizardMobile", null)
     }
 
     private fun setupData() {
@@ -142,6 +151,7 @@ class MainFragment: VerticalGridSupportFragment() {
                 rowViewHolder: RowPresenter.ViewHolder?,
                 row: Row?) {
             if(item is LauncherAppItem) {
+                viewModel.startHyPacketCapture(item.appId, item.appName)
                 viewModel.insertAppExecRecord(item.appId, item.appName)
                 viewModel.isClickApp = true
                 val intent = packageManager.getLaunchIntentForPackage(item.appId)

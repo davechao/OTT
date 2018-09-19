@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.text.TextUtils
 import com.facebook.react.ReactInstanceManager
 import com.google.gson.Gson
+import com.hybroad.hypacketlib.HyPacket
 import com.isuncloud.ott.BuildConfig
 import com.isuncloud.ott.ui.base.BaseAndroidViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -13,6 +14,7 @@ import com.isuncloud.ott.repository.ApiRepository
 import com.isuncloud.ott.repository.AppRepository
 import com.isuncloud.ott.repository.db.typeconverter.LocalDateTimeConverter
 import com.isuncloud.ott.repository.model.AppData
+import com.isuncloud.ott.repository.model.Packet
 import com.isuncloud.ott.repository.model.Ratings
 import com.isuncloud.ott.repository.model.Wallet
 import com.isuncloud.ott.repository.model.api.*
@@ -20,12 +22,18 @@ import com.isuncloud.ott.repository.model.rn.*
 import com.isuncloud.ott.rn.WizardModule
 import com.isuncloud.ott.utils.SchedulerProvider
 import io.reactivex.rxkotlin.subscribeBy
+import org.spongycastle.util.encoders.Hex
 import org.threeten.bp.LocalDateTime
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class MainViewModel(app: Application): BaseAndroidViewModel(app) {
+
+    companion object {
+        private const val PACKET_CAPTURE_PERIOD = 5000
+    }
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
@@ -33,6 +41,8 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
     private lateinit var wallet: Wallet
     private lateinit var appData: AppData
     private lateinit var ratings: Ratings
+    private lateinit var packetCaptureTimer: Timer
+    private lateinit var packets: ArrayList<Packet>
 
     private var uuid = ""
     var deviceId = ""
@@ -45,6 +55,7 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
     @Inject lateinit var appRepository: AppRepository
     @Inject lateinit var apiRepository: ApiRepository
     @Inject lateinit var gson: Gson
+    @Inject lateinit var hyPacket: HyPacket
 
     override fun onCleared() {
         compositeDisposable.clear()
@@ -53,10 +64,43 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
     init {
         OTTApp.getAppComponent().inject(this)
-        setupReactInstanceManagerListener()
     }
 
-    private fun setupReactInstanceManagerListener() {
+    fun startHyPacketCapture(appId: String, appName: String) {
+        Timber.d("HyPacket startCapture")
+        packets = arrayListOf()
+        hyPacket.startCapture()
+
+        val packetCaptureTimerTask = object: TimerTask() {
+            override fun run() {
+                val packetData = hyPacket.packet
+                val data = Hex.toHexString(packetData)
+                Timber.d("Packet Data:  $data")
+                val packet = Packet(
+                        data = packetData,
+                        appId = appId,
+                        appName = appName,
+                        deviceId = deviceId,
+                        createTime = LocalDateTimeConverter().dateToTimestamp(LocalDateTime.now())
+                )
+                packets.add(packet)
+            }
+        }
+        packetCaptureTimer = Timer()
+        packetCaptureTimer.schedule(packetCaptureTimerTask, 0, PACLET_CAPTURE_PERIOD.toLong())
+    }
+
+    fun stopHyPacketCapture() {
+        Timber.d("HyPacket stopCapture")
+        hyPacket.stopCapture()
+        packetCaptureTimer.cancel()
+        if(packets.isNotEmpty()) {
+            appRepository.savePackets(packets)
+            packets.clear()
+        }
+    }
+
+    fun setupReactInstanceManagerListener() {
         reactInstanceManager.addReactInstanceEventListener {
             wizardModule = it.getNativeModule(WizardModule::class.java)
             OTTApp.getAppComponent().inject(wizardModule)

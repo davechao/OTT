@@ -5,6 +5,7 @@ import com.isuncloud.ott.repository.ApiService
 import com.isuncloud.ott.repository.AppRepository
 import com.isuncloud.ott.repository.db.AppDatabase
 import com.isuncloud.ott.repository.db.dao.EcKeyDao
+import com.isuncloud.ott.repository.db.dao.PacketDao
 import com.isuncloud.ott.repository.db.dao.WalletDao
 import dagger.Module
 import dagger.Provides
@@ -23,19 +24,22 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideEcKeyDao(appDatabase: AppDatabase): EcKeyDao {
-        return appDatabase.ecKeyDao()
-    }
+    fun provideEcKeyDao(appDatabase: AppDatabase) = appDatabase.ecKeyDao()
 
     @Provides
     @Singleton
-    fun provideWalletDao(appDatabase: AppDatabase): WalletDao {
-        return appDatabase.walletDao()
-    }
+    fun provideWalletDao(appDatabase: AppDatabase) = appDatabase.walletDao()
 
     @Provides
     @Singleton
-    fun providesAppRepository(ecKeyDao: EcKeyDao, walletDao: WalletDao) = AppRepository(ecKeyDao, walletDao)
+    fun providePacketDao(appDatabase: AppDatabase) = appDatabase.packetDao()
+
+    @Provides
+    @Singleton
+    fun providesAppRepository(ecKeyDao: EcKeyDao,
+                              walletDao: WalletDao,
+                              packetDao: PacketDao)
+            = AppRepository(ecKeyDao, walletDao, packetDao)
 
     @Provides
     @Singleton

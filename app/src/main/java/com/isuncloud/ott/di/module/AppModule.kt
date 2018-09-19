@@ -8,6 +8,7 @@ import com.facebook.react.shell.MainReactPackage
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.hybroad.hypacketlib.HyPacket
 import com.isuncloud.ott.BuildConfig
 import com.isuncloud.ott.app.EventPublishSubject
 import com.isuncloud.ott.app.Pref
@@ -61,5 +62,9 @@ class AppModule {
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build()
     }
+
+    @Provides
+    @Singleton
+    fun providesHyPacket() = HyPacket()
 
 }
