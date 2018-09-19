@@ -87,7 +87,7 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
             }
         }
         packetCaptureTimer = Timer()
-        packetCaptureTimer.schedule(packetCaptureTimerTask, 0, PACLET_CAPTURE_PERIOD.toLong())
+        packetCaptureTimer.schedule(packetCaptureTimerTask, 0, PACKET_CAPTURE_PERIOD.toLong())
     }
 
     fun stopHyPacketCapture() {
