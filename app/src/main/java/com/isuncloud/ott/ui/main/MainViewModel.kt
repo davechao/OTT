@@ -4,7 +4,6 @@ import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.text.TextUtils
 import com.facebook.react.ReactInstanceManager
-import com.google.gson.Gson
 import com.hybroad.hypacketlib.HyPacket
 import com.isuncloud.ott.BuildConfig
 import com.isuncloud.ott.ui.base.BaseAndroidViewModel
@@ -54,7 +53,6 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
     @Inject lateinit var schedulerProvider: SchedulerProvider
     @Inject lateinit var appRepository: AppRepository
     @Inject lateinit var apiRepository: ApiRepository
-    @Inject lateinit var gson: Gson
     @Inject lateinit var hyPacket: HyPacket
 
     override fun onCleared() {
@@ -127,11 +125,9 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
                         .compose(schedulerProvider.getSchedulersForSingle())
                         .subscribeBy(
                                 onSuccess = {
-                                    Timber.d(it)
-                                    val initResult = gson.fromJson(it, InitResult::class.java)
                                     if(TextUtils.isEmpty(appRepository.getPrivateKey())) {
-                                        appRepository.saveEcKeyPair(initResult.privateKey)
-                                        appRepository.saveWallet(initResult.address)
+                                        appRepository.saveEcKeyPair(it.privateKey)
+                                        appRepository.saveWallet(it.address)
                                         addDeviceData()
                                     }
                                     wallet = appRepository.getWallet()

@@ -27,8 +27,11 @@ class WizardModule(private val reactContext: ReactApplicationContext): ReactCont
         return "WizardModule"
     }
 
-    fun initInfiniteChain(envRequest: EnvRequest): Single<String> {
+    fun initInfiniteChain(envRequest: EnvRequest): Single<InitResult> {
         return sendEvent(INIT_INFINITE_CHAIN, envRequest)
+                .map {
+                    gson.fromJson(it, InitResult::class.java)
+                }
     }
 
     fun makeLightTx(lightTx: MakeLightTx): Single<String> {
@@ -63,13 +66,10 @@ class WizardModule(private val reactContext: ReactApplicationContext): ReactCont
 
     private fun eventResultHandler(receiveData: String) {
         Timber.d("receive data: $receiveData")
-
         val eventResult = gson.fromJson(receiveData, EventResult::class.java)
         val eventID = eventResult.eventID
         if (eventResult.success) {
             eventMap[eventID]!!.second.onSuccess(objectToString(eventResult.result))
-        } else {
-
         }
     }
 
