@@ -1,13 +1,13 @@
 package com.isuncloud.ott.ui.main
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.Settings.Secure
-import android.support.v17.leanback.app.VerticalGridSupportFragment
-import android.support.v17.leanback.widget.*
+import androidx.leanback.app.VerticalGridSupportFragment
+import androidx.leanback.widget.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

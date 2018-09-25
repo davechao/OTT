@@ -1,8 +1,8 @@
 package com.isuncloud.ott.repository.db
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.TypeConverters
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.TypeConverters
+import androidx.room.RoomDatabase
 import com.isuncloud.ott.repository.db.dao.EcKeyDao
 import com.isuncloud.ott.repository.db.dao.PacketDao
 import com.isuncloud.ott.repository.db.dao.WalletDao

@@ -1,9 +1,9 @@
 package com.isuncloud.ott.ui.base
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.databinding.Observable
-import android.databinding.PropertyChangeRegistry
+import androidx.lifecycle.AndroidViewModel
+import androidx.databinding.Observable
+import androidx.databinding.PropertyChangeRegistry
 import io.reactivex.disposables.CompositeDisposable
 
 open class BaseAndroidViewModel(app: Application)

@@ -1,7 +1,7 @@
 package com.isuncloud.ott.ui.main
 
 import android.app.Application
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.text.TextUtils
 import com.facebook.react.ReactInstanceManager
 import com.hybroad.hypacketlib.HyPacket

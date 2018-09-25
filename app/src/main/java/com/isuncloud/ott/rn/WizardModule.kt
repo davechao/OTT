@@ -55,7 +55,7 @@ class WizardModule(private val reactContext: ReactApplicationContext): ReactCont
         eventRequest.request = model
 
         val sendData = objectToString(eventRequest)
-        Timber.d("send data:: $sendData")
+        Timber.d("send data: $sendData")
 
         return Single.create<String> {
             eventMap[eventID] = Pair(eventName, it)

@@ -1,7 +1,7 @@
 package com.isuncloud.ott.ui.main
 
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.FragmentActivity
 import com.isuncloud.ott.R
 
 class MainActivity: FragmentActivity() {

@@ -1,6 +1,6 @@
 package com.isuncloud.ott.repository.db.dao
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.isuncloud.ott.repository.model.Packet
 
 @Dao
