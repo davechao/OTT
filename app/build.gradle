@@ -50,6 +50,7 @@ android {
             buildConfigField 'String', 'ServerUrl', '"http://54.255.246.75:3001"'
             buildConfigField 'String', 'NodeUrl', '"http://54.255.246.75:3000"'
             buildConfigField 'String', 'Web3Url', '"http://13.229.118.246:8545"'
+            buildConfigField 'String', 'ApiUrl', '"http://192.168.2.83"'
             versionNameSuffix "-staging"
         }
         production {
@@ -58,6 +59,7 @@ android {
             buildConfigField 'String', 'ServerUrl', '"http://54.255.246.75:3001"'
             buildConfigField 'String', 'NodeUrl', '"http://54.255.246.75:3000"'
             buildConfigField 'String', 'Web3Url', '"http://13.229.118.246:8545"'
+            buildConfigField 'String', 'ApiUrl', '"http://192.168.2.83"'
         }
     }
 
