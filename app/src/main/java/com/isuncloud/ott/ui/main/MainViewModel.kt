@@ -129,8 +129,9 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
                                         appRepository.saveEcKeyPair(it.privateKey)
                                         appRepository.saveWallet(it.address)
                                         addDeviceData()
+                                    } else {
+                                        wallet = appRepository.getWallet()
                                     }
-                                    wallet = appRepository.getWallet()
                                 },
                                 onError = {
                                     Timber.d(it.toString())
@@ -138,7 +139,7 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
     }
 
     private fun addDeviceData() {
-        val wallet = appRepository.getWallet()
+        wallet = appRepository.getWallet()
         val addDeviceItem = AddDeviceItem(deviceId, wallet.address, "new")
         compositeDisposable.add(
                 apiRepository.addDevice(addDeviceItem)
