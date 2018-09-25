@@ -1,6 +1,7 @@
 package com.isuncloud.ott.di.module
 
 import com.google.gson.Gson
+import com.isuncloud.ott.BuildConfig
 import com.isuncloud.ott.repository.ApiService
 import com.isuncloud.ott.repository.AppRepository
 import com.isuncloud.ott.repository.db.AppDatabase
@@ -17,10 +18,6 @@ import javax.inject.Singleton
 
 @Module
 class RepositoryModule {
-
-    companion object {
-        const val API_BASE_URL = "http://192.168.2.83"
-    }
 
     @Provides
     @Singleton
@@ -48,7 +45,7 @@ class RepositoryModule {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
-                .baseUrl(API_BASE_URL)
+                .baseUrl(BuildConfig.ApiUrl)
                 .build().create(ApiService::class.java)
     }
 
