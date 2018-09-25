@@ -113,7 +113,6 @@ dependencies {
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'androidx.core:core-ktx:0.3'
 
     // MultiDex
     implementation 'com.android.support:multidex:1.0.3'
