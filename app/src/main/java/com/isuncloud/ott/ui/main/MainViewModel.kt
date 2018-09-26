@@ -143,10 +143,10 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
         val addDeviceItem = AddDeviceItem(deviceId, wallet.address, "new")
         compositeDisposable.add(
                 apiRepository.addDevice(addDeviceItem)
-                        .compose(schedulerProvider.getSchedulersForSingle())
+                        .compose(schedulerProvider.getSchedulersForCompletable())
                         .subscribeBy(
-                                onSuccess = {
-                                    Timber.d("result: $it")
+                                onComplete = {
+                                    Timber.d("Device data is added!")
                                 },
                                 onError = {
                                     Timber.d(it.toString())
@@ -159,10 +159,10 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
                 deviceId, wallet.address, "activity", lastAccessTime)
         compositeDisposable.add(
                 apiRepository.updateDevice(updateDeviceItem)
-                        .compose(schedulerProvider.getSchedulersForSingle())
+                        .compose(schedulerProvider.getSchedulersForCompletable())
                         .subscribeBy(
-                                onSuccess = {
-                                    Timber.d("result: $it")
+                                onComplete = {
+                                    Timber.d("Device data is updated!")
                                 },
                                 onError = {
                                     Timber.d(it.toString())
@@ -173,10 +173,10 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
         val insertManyAppItem = InsertManyAppItem(deviceId, wallet.address, apps)
         compositeDisposable.add(
                 apiRepository.insertManyApps(insertManyAppItem)
-                        .compose(schedulerProvider.getSchedulersForSingle())
+                        .compose(schedulerProvider.getSchedulersForCompletable())
                         .subscribeBy(
-                                onSuccess = {
-                                    Timber.d("result: $it")
+                                onComplete = {
+                                    Timber.d("Apps are inserted!")
                                 },
                                 onError = {
                                     Timber.d(it.toString())
@@ -203,7 +203,7 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
                                 }))
     }
 
-    fun makeLightTx() {
+    fun makeTxAndUpdateAppExecRecord() {
         val endTime = LocalDateTimeConverter().dateToTimestamp(LocalDateTime.now())
         ratings.appETime = endTime
         ratings.appRunduration = endTime - ratings.appSTime
@@ -221,25 +221,24 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
         compositeDisposable.add(
                 wizardModule.makeLightTx(lightTx)
-                        .compose(schedulerProvider.getSchedulersForSingle())
+                        .compose(schedulerProvider.getSchedulersForObservable())
+                        .doOnNext { updateAppExecRecord(it) }
                         .subscribeBy(
-                                onSuccess = {
-                                    Timber.d("makeLightTx: $it")
-                                    lightTxJson.value = it
+                                onComplete = {
+                                    Timber.d("MakeTx and update app execute record!")
                                 },
                                 onError = {
                                     Timber.d(it.toString())
-                                }))
+                                }
+                        ))
     }
 
-    fun updateAppExecRecord(lightTxJson: String) {
-
+    private fun updateAppExecRecord(lightTxJson: String) {
         if(TextUtils.isEmpty(uuid)) {
             return
         }
 
         val endTime = LocalDateTimeConverter().dateToTimestamp(LocalDateTime.now())
-
         ratings.appETime = endTime
         ratings.appRunduration = endTime - ratings.appSTime
 
@@ -247,10 +246,10 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
                 uuid, deviceId, wallet.address, ratings.appETime, lightTxJson)
         compositeDisposable.add(
                 apiRepository.updateAppExecRecord(updateAppExecRecordItem)
-                        .compose(schedulerProvider.getSchedulersForSingle())
+                        .compose(schedulerProvider.getSchedulersForCompletable())
                         .subscribeBy(
-                                onSuccess = {
-                                    Timber.d("result: $it")
+                                onComplete = {
+                                    Timber.d("App execute record is updated!")
                                 },
                                 onError = {
                                     Timber.d(it.toString())

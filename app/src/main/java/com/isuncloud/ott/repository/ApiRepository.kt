@@ -1,6 +1,7 @@
 package com.isuncloud.ott.repository
 
 import com.isuncloud.ott.repository.model.api.*
+import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,18 +22,22 @@ class ApiRepository @Inject constructor(private val apiService: ApiService) {
     private val appExecReturnFieldItem = "{ok uuid}"
 
     fun addDevice(body: AddDeviceItem)
-            : Single<ApiItem<ReturnFieldItem>> = apiService.addDevice(MUTATION, ADD_DEVICE, body, returnField)
+            : Completable = apiService.addDevice(MUTATION, ADD_DEVICE, body, returnField)
+            .ignoreElement()
 
     fun updateDevice(body: UpdateDeviceItem)
-            : Single<ApiItem<ReturnFieldItem>> = apiService.updateDevice(MUTATION, UPDATE_DEVICE, body, returnField)
+            : Completable = apiService.updateDevice(MUTATION, UPDATE_DEVICE, body, returnField)
+            .ignoreElement()
 
     fun insertManyApps(body: InsertManyAppItem)
-            : Single<ApiItem<ReturnFieldItem>> = apiService.insertManyApp(MUTATION, INSERT_MANY_APPS, body, returnField)
+            : Completable = apiService.insertManyApp(MUTATION, INSERT_MANY_APPS, body, returnField)
+            .ignoreElement()
 
     fun insertAppExecRecord(body: InsertAppExecRecordItem)
             : Single<ApiItem<AppExecReturnFieldItem>> = apiService.insertAppExecRecord(MUTATION, INSERT_APP_EXEC_RECORD, body, appExecReturnFieldItem)
 
     fun updateAppExecRecord(body: UpdateAppExecRecordItem)
-            : Single<ApiItem<ReturnFieldItem>> = apiService.updateAppExecRecord(MUTATION, UPDATE_APP_EXEC_RECORD, body, returnField)
+            : Completable = apiService.updateAppExecRecord(MUTATION, UPDATE_APP_EXEC_RECORD, body, returnField)
+            .ignoreElement()
 
 }

@@ -1,6 +1,5 @@
 package com.isuncloud.ott.ui.main
 
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -45,14 +44,13 @@ class MainFragment: VerticalGridSupportFragment() {
         onItemViewClickedListener = ItemViewClickedListener()
         setupRN()
         setupData()
-        observeData()
         startJobs()
     }
 
     override fun onResume() {
         if(viewModel.isClickApp) {
             viewModel.stopHyPacketCapture()
-            viewModel.makeLightTx()
+            viewModel.makeTxAndUpdateAppExecRecord()
         }
         viewModel.isClickApp = false
         super.onResume()
@@ -97,12 +95,6 @@ class MainFragment: VerticalGridSupportFragment() {
         }
 
         adapter = cardRowAdapter
-    }
-
-    private fun observeData() {
-        viewModel.lightTxJson.observe(this, Observer {
-            viewModel.updateAppExecRecord(it!!)
-        })
     }
 
     private fun startJobs() {

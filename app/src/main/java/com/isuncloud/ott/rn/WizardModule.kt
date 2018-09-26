@@ -7,6 +7,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.google.gson.Gson
 import com.isuncloud.ott.repository.model.rn.*
 import com.isuncloud.ott.utils.RandomIDGenerator
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import timber.log.Timber
@@ -29,13 +30,11 @@ class WizardModule(private val reactContext: ReactApplicationContext): ReactCont
 
     fun initInfiniteChain(envRequest: EnvRequest): Single<InitResult> {
         return sendEvent(INIT_INFINITE_CHAIN, envRequest)
-                .map {
-                    gson.fromJson(it, InitResult::class.java)
-                }
+                .map { gson.fromJson(it, InitResult::class.java) }
     }
 
-    fun makeLightTx(lightTx: MakeLightTx): Single<String> {
-        return sendEvent(MAKE_LIGHT_TX, lightTx)
+    fun makeLightTx(lightTx: MakeLightTx): Observable<String> {
+        return sendEvent(MAKE_LIGHT_TX, lightTx).toObservable()
     }
 
     @ReactMethod
