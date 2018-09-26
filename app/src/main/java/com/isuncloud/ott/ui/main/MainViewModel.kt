@@ -192,11 +192,11 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
                 deviceId, wallet.address, appId, appName, startTime)
         compositeDisposable.add(
                 apiRepository.insertAppExecRecord(insertAppExecRecordItem)
-                        .compose(schedulerProvider.getSchedulersForSingle())
+                        .compose(schedulerProvider.getSchedulersForFlowable())
+                        .doOnNext{ uuid = it.data.uuid }
                         .subscribeBy(
-                                onSuccess = {
-                                    Timber.d("result: $it")
-                                    uuid = it.data.uuid
+                                onComplete = {
+                                    Timber.d("App execute record is inserted!")
                                 },
                                 onError = {
                                     Timber.d(it.toString())
@@ -221,7 +221,7 @@ class MainViewModel(app: Application): BaseAndroidViewModel(app) {
 
         compositeDisposable.add(
                 wizardModule.makeLightTx(lightTx)
-                        .compose(schedulerProvider.getSchedulersForObservable())
+                        .compose(schedulerProvider.getSchedulersForFlowable())
                         .doOnNext { updateAppExecRecord(it) }
                         .subscribeBy(
                                 onComplete = {

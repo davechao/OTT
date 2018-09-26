@@ -2,7 +2,7 @@ package com.isuncloud.ott.repository
 
 import com.isuncloud.ott.repository.model.api.*
 import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.Flowable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,7 +34,8 @@ class ApiRepository @Inject constructor(private val apiService: ApiService) {
             .ignoreElement()
 
     fun insertAppExecRecord(body: InsertAppExecRecordItem)
-            : Single<ApiItem<AppExecReturnFieldItem>> = apiService.insertAppExecRecord(MUTATION, INSERT_APP_EXEC_RECORD, body, appExecReturnFieldItem)
+            : Flowable<ApiItem<AppExecReturnFieldItem>> = apiService.insertAppExecRecord(MUTATION, INSERT_APP_EXEC_RECORD, body, appExecReturnFieldItem)
+            .toFlowable()
 
     fun updateAppExecRecord(body: UpdateAppExecRecordItem)
             : Completable = apiService.updateAppExecRecord(MUTATION, UPDATE_APP_EXEC_RECORD, body, returnField)

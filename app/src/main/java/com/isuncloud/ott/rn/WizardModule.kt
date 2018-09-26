@@ -7,6 +7,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.google.gson.Gson
 import com.isuncloud.ott.repository.model.rn.*
 import com.isuncloud.ott.utils.RandomIDGenerator
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
@@ -33,8 +34,8 @@ class WizardModule(private val reactContext: ReactApplicationContext): ReactCont
                 .map { gson.fromJson(it, InitResult::class.java) }
     }
 
-    fun makeLightTx(lightTx: MakeLightTx): Observable<String> {
-        return sendEvent(MAKE_LIGHT_TX, lightTx).toObservable()
+    fun makeLightTx(lightTx: MakeLightTx): Flowable<String> {
+        return sendEvent(MAKE_LIGHT_TX, lightTx).toFlowable()
     }
 
     @ReactMethod
