@@ -48,18 +48,18 @@ android {
             dimension "mode"
             applicationId = "com.isuncloud.ott.staging"
             buildConfigField 'String', 'ServerUrl', '"http://54.255.246.75:3001"'
-            buildConfigField 'String', 'NodeUrl', '"http://54.255.246.75:3000"'
-            buildConfigField 'String', 'Web3Url', '"http://13.229.118.246:8545"'
-            buildConfigField 'String', 'ApiUrl', '"http://192.168.2.83"'
+            buildConfigField 'String', 'NodeUrl', '"http://192.168.2.83:3010"'
+            buildConfigField 'String', 'Web3Url', '"http://192.168.2.83:8547"'
+            buildConfigField 'String', 'ApiUrl', '"http://192.168.2.4"'
             versionNameSuffix "-staging"
         }
         production {
             dimension "mode"
             applicationId = "com.isuncloud.ott"
             buildConfigField 'String', 'ServerUrl', '"http://54.255.246.75:3001"'
-            buildConfigField 'String', 'NodeUrl', '"http://54.255.246.75:3000"'
-            buildConfigField 'String', 'Web3Url', '"http://13.229.118.246:8545"'
-            buildConfigField 'String', 'ApiUrl', '"http://192.168.2.83"'
+            buildConfigField 'String', 'NodeUrl', '"http://192.168.2.83:3010"'
+            buildConfigField 'String', 'Web3Url', '"http://192.168.2.83:8547"'
+            buildConfigField 'String', 'ApiUrl', '"http://192.168.2.4"'
         }
     }
 
@@ -120,12 +120,12 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.0'
 
     // Support
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.leanback:leanback:1.0.0'
+    implementation "androidx.legacy:legacy-support-v4:$androidx_version"
+    implementation "androidx.appcompat:appcompat:$androidx_version"
+    implementation "com.google.android.material:material:$androidx_version"
+    implementation "androidx.recyclerview:recyclerview:$androidx_version"
+    implementation "androidx.cardview:cardview:$androidx_version"
+    implementation "androidx.leanback:leanback:$androidx_version"
 
     // Constraint Layout
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'

@@ -1,7 +1,8 @@
 package com.isuncloud.ott.repository
 
 import com.isuncloud.ott.repository.model.api.*
-import io.reactivex.Single
+import io.reactivex.Completable
+import io.reactivex.Flowable
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -15,7 +16,7 @@ interface ApiService {
             @Path("action") action: String,
             @Body body: AddDeviceItem,
             @Query("r_fields") rFields: String
-    ): Single<ApiItem<ReturnFieldItem>>
+    ): Completable
 
     @POST("/graphql_gateway/{type}/{action}")
     fun updateDevice(
@@ -23,7 +24,7 @@ interface ApiService {
             @Path("action") action: String,
             @Body body: UpdateDeviceItem,
             @Query("r_fields") rFields: String
-    ): Single<ApiItem<ReturnFieldItem>>
+    ): Completable
 
     @POST("/graphql_gateway/{type}/{action}")
     fun insertManyApp(
@@ -31,7 +32,7 @@ interface ApiService {
             @Path("action") action: String,
             @Body body: InsertManyAppItem,
             @Query("r_fields") rFields: String
-    ): Single<ApiItem<ReturnFieldItem>>
+    ): Completable
 
     @POST("/graphql_gateway/{type}/{action}")
     fun insertAppExecRecord(
@@ -39,7 +40,7 @@ interface ApiService {
             @Path("action") action: String,
             @Body body: InsertAppExecRecordItem,
             @Query("r_fields") rFields: String
-    ): Single<ApiItem<AppExecReturnFieldItem>>
+    ): Flowable<ApiItem<AppExecReturnFieldItem>>
 
     @POST("/graphql_gateway/{type}/{action}")
     fun updateAppExecRecord(
@@ -47,6 +48,6 @@ interface ApiService {
             @Path("action") action: String,
             @Body body: UpdateAppExecRecordItem,
             @Query("r_fields") rFields: String
-    ): Single<ApiItem<ReturnFieldItem>>
+    ): Completable
 
 }
